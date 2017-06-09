@@ -1,8 +1,8 @@
-import React from 'react'
-import {ButtonGroup, Button} from 'react-bootstrap'
-import cssModules from 'react-css-modules'
-import {Todos} from './components'
-import style from './dashboard.style.scss'
+import React from 'react';
+import {Button, ButtonGroup} from 'react-bootstrap';
+import cssModules from 'react-css-modules';
+import {Todos} from './components';
+import style from './dashboard.style.scss';
 
 export const DashboardView = cssModules(({dashboard}) => {
     return (
@@ -21,5 +21,5 @@ export const DashboardView = cssModules(({dashboard}) => {
                 Dashboard
             </div>
         </div>
-    )
-}, style, {errorWhenNotFound: false})
+    );
+}, style, {errorWhenNotFound: false});

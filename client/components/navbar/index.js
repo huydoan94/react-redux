@@ -1,2 +1,2 @@
-export * from './navbar.component'
-export * from './navbar.view'
+export * from './navbar.component';
+export * from './navbar.view';

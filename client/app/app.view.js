@@ -1,7 +1,7 @@
-import React from 'react'
-import cssModules from 'react-css-modules'
-import {Navbar} from '../components'
-import style from './app.style.scss'
+import React from 'react';
+import cssModules from 'react-css-modules';
+import {Navbar} from '../components';
+import style from './app.style.scss';
 
 export const AppView = cssModules(({page}) => {
     return (
@@ -13,5 +13,5 @@ export const AppView = cssModules(({page}) => {
                 {page}
             </div>
         </div>
-    )
-}, style, {errorWhenNotFound: false})
+    );
+}, style, {errorWhenNotFound: false});
