@@ -7,7 +7,7 @@ export const AppRoute = {
             path: '/',
             component: App,
             indexRoute: {
-                component: Login
+                component: Dashboard
             },
             childRoutes: [
                 LoginRoute,

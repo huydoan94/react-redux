@@ -8,7 +8,7 @@ export const NavbarView = () => {
         <Navbar inverse fixedTop fluid>
             <Navbar.Header>
                 <Navbar.Brand>
-                    <Link to='/login'>Login</Link>
+                    <Link to='/dashboard'>Dashboard</Link>
                 </Navbar.Brand>
             </Navbar.Header>
             <Nav>
