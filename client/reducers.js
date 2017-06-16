@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
-import {dashboard, login} from './pages';
+import {dashboard, loginPage} from './pages';
 
 export const AppReducer = combineReducers({
     dashboard,
-    login
+    loginPage
 });

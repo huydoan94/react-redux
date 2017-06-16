@@ -9,6 +9,8 @@ export const LoginView = ({loginState, onChange, onSubmit}) => {
                 <form onSubmit={onSubmit}>
                     <h1>Login</h1>
 
+                    { errors.form && <div className="alert alert-danger">{errors.form}</div> }
+
                     <div className="form-group">
                         <label className="control-label">Username</label>
                         <input

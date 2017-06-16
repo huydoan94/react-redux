@@ -1,12 +1,12 @@
-export function login(datas) {
-    return new Promise((res, err) => {
+export const login = (account) => {
+    return new Promise((resolve, reject) => {
         fetch('http://localhost:8080/api/accounts/login', {
             method: 'POST',
             headers: new Headers({
                 'content-type': 'application/json',
                 'authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
             }),
-            body: JSON.stringify(datas)
+            body: JSON.stringify(account)
         }).then((response) => {
             if (!response.ok) {
                 throw response.statusText;
@@ -17,9 +17,9 @@ export function login(datas) {
             const token = result.token;
 
             sessionStorage.setItem('jwtToken', token);
-            res(result);
+            resolve(result);
         }).catch((error) => {
-            err(error);
+            resolve(error);
         });
     });
 }
