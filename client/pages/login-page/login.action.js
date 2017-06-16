@@ -7,7 +7,7 @@ const loginAction = () => {
 }
 
 export const loginRequest = (account) => (dispatch) => {
-    login().then((response) => {
+    login(account).then((response) => {
         console.log(response);
         dispatch(loginAction);
     });

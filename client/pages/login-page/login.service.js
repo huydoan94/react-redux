@@ -4,7 +4,6 @@ export const login = (account) => {
             method: 'POST',
             headers: new Headers({
                 'content-type': 'application/json',
-                'authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
             }),
             body: JSON.stringify(account)
         }).then((response) => {
@@ -19,7 +18,7 @@ export const login = (account) => {
             sessionStorage.setItem('jwtToken', token);
             resolve(result);
         }).catch((error) => {
-            resolve(error);
+            reject(error);
         });
     });
 }
