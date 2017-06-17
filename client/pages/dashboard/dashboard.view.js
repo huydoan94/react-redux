@@ -4,6 +4,8 @@ import cssModules from 'react-css-modules';
 import {Todos} from './components';
 import style from './dashboard.style.scss';
 
+import { TextWidget } from '../text-widget';
+
 export const DashboardView = cssModules(({dashboard}) => {
     return (
         <div styleName='dashboard'>
@@ -19,6 +21,7 @@ export const DashboardView = cssModules(({dashboard}) => {
             </div>
             <div styleName='dashboard__body'>
                 Dashboard
+                <TextWidget />
             </div>
         </div>
     );

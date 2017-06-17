@@ -1,0 +1,8 @@
+@import "../../assets/styles/foundation/helpers/bem";
+
+@include bem-b('widget-container') {
+    @include bem-e('text') { 
+        padding-left: 15px;
+        width: calc(100% - 15px);
+    }
+}
