@@ -1,6 +1,6 @@
-import {Login} from './login.component';
+import LoginForm from './login.component';
 
-// export const LoginRoute = {
-//     path: '/login-old',
-//     component: Login
-// };
+export const LoginRoute = {
+    path: '/login',
+    component: LoginForm
+};

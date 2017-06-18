@@ -1,42 +1,15 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { Input } from '../../components/input';
 
-export const LoginView = ({loginState, onChange, onSubmit}) => {
-    const {errors, username, password, isLoading} = loginState;
-
-    return (
-        <div className="row">
-            <div className="col-md-4 col-md-offset-4">
-                <form onSubmit={onSubmit}>
-                    <h1>Login</h1>
-
-                    { errors.form && <div className="alert alert-danger">{errors.form}</div> }
-
-                    <div className="form-group">
-                        <label className="control-label">Username</label>
-                        <input
-                            name="username"
-                            onChange={onChange}
-                            className="form-control"
-                        />
-                        {errors.username && <span className="help-block">{errors.username}</span>}
-                    </div>
-
-                    <div className="form-group">
-                        <label className="control-label">Password</label>
-                        <input
-                            name="password"
-                            type="password"
-                            className="form-control"
-                            onChange={onChange}
-                        />
-                        {errors.password && <span className="help-block">{errors.password}</span>}
-                    </div>
-
-                    <div className="form-group">
-                        <button className="btn btn-primary btn-lg" disabled={isLoading}>Login</button>
-                    </div>
-                </form>
-            </div>
+const LoginView = ({inputUsername, inputPassword, setUsername, setPassword, onLoginClick}) => {
+    return ( 
+        <div>
+            <h2>Login to Your Account</h2>
+            <Input inputAtrribute={inputUsername} getInputValue={setUsername}/>
+            <Input inputAtrribute={inputPassword} getInputValue={setPassword}/>
+            <button onClick={onLoginClick}>Login</button>
         </div>
     );
 };
+
+export default LoginView;

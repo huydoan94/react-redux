@@ -1,9 +1,0 @@
-@import "../../assets/styles/foundation/helpers/bem";
-
-@include bem-b('widget-container') {
-    border: 1px solid #cbcbcb;
-    // min-height: 200px;
-    min-width: 400px;
-    position: relative;
-    font-size: 13px;
-}

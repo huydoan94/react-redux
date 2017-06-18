@@ -1,60 +1,56 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import {LoginView} from './login.view';
-import {login} from './login.action';
-import validateInput from './login.validator';
-import {browserHistory} from 'react-router';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-@connect(state => ({login: state.login}))
-export class Login extends React.Component {
+import {loginRequest} from './login.action';
+import LoginView from './login.view';
 
+class LoginForm extends Component {
     constructor(props) {
         super(props);
 
-        if (sessionStorage.getItem('jwtToken') !== null) {
-            browserHistory.push('/dashboard');
-        }
+        const { dispatch } = this.props;
+        this.dispatch = dispatch;
 
-        this.state = {
-            username: '',
-            password: '',
-            errors: {},
-            isLoading: false
+        this.inputUsername = {
+            type: 'text',
+            placeholder: 'Username',
+            value: '',
         };
 
-        this.onSubmit = this.onSubmit.bind(this);
-        this.onChange = this.onChange.bind(this);
+        this.inputPassword = {
+            type: 'text',
+            placeholder: 'Password',
+            value: '',
+        };
     }
 
-    isValid() {
-        const {errors, isValidated} = validateInput(this.state);
-
-        if (!isValidated) {
-            this.setState({errors});
-        }
-
-        return isValidated;
+    LoginClick = (ref) => {
+        let account = {
+            username: this.inputUsername.value,
+            password: this.inputPassword.value
+        };
+        this.dispatch(loginRequest(account));
     }
 
-    onSubmit(e) {
-        e.preventDefault();
-        if (this.isValid()) {
-            this.setState({errros: {}, isLoading: true});
-            login(this.state).then((res) => {
-                browserHistory.push('/dashboard');
-            }).catch((err) => {
-                this.setState({errors: {form: 'Invalid Credentials'}, isLoading: false});
-            });
-        }
+    setUsername = (ref) => {
+        this.inputUsername.value = ref.value;
     }
 
-    onChange(e) {
-        this.setState({[e.target.name]: e.target.value});
+    setPassword = (ref) => {
+        this.inputPassword.value = ref.value;
     }
 
     render() {
-        return <LoginView loginState={this.state}
-                          onChange={this.onChange}
-                          onSubmit={this.onSubmit}/>;
-    }
-}
+        return (
+            <LoginView 
+                inputUsername={this.inputUsername} 
+                inputPassword={this.inputPassword} 
+                setUsername={this.setUsername}
+                setPassword={this.setPassword}
+                onLoginClick={this.LoginClick}
+            />
+        )
+    };
+};
+
+export default connect()(LoginForm);
