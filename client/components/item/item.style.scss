@@ -1,0 +1,72 @@
+@import "../../assets/styles/foundation/helpers/bem";
+$checkbox-color: #1E5281;
+
+@include bem-b('styled-checkbox') {
+  position: absolute; // take it out of document flow
+  opacity: 0; // hide it
+
+  & + label {
+    position: relative;
+    cursor: pointer;
+    // padding: 0;
+    padding: 5px 0 5px 15px;
+    margin: 0;
+  }
+
+  // Box.
+  & + label:before {
+    content: '';
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: text-top;
+    width: 19px;
+    height: 19px;
+    background: white;
+    border-radius: 50%;
+    border: 3px solid $checkbox-color;
+  }
+
+  // Box focus
+  &:focus + label:before {
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+  }
+
+  // Box checked
+  &:checked + label:before {
+    background: white;
+  }
+  
+  &:checked + label:after {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 15px;
+    background: $checkbox-color;
+    width: 2px;
+    height: 2px;
+    box-shadow: 
+      2px 0 0 $checkbox-color,
+      4px 0 0 $checkbox-color,
+      4px -2px 0 $checkbox-color,
+      4px -4px 0 $checkbox-color,
+      4px -6px 0 $checkbox-color;
+    transform: rotate(45deg);
+  }
+}
+
+@include bem-b('item-wrapper') {
+    border-top: 1px solid #cbcbcb;
+    padding: 0;
+
+    &:hover {
+      .delete-item-btn {
+        visibility: visible;
+      }
+    }
+}
+
+@include bem-b('item-completed') {
+  text-decoration: line-through;
+  color: #777777;
+  font-weight: 300;
+}

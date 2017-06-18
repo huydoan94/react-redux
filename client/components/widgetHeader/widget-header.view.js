@@ -10,14 +10,15 @@ export const WidgetHeaderView = cssModules(({widget}) => {
             </div>
             <div styleName='widget-header-wrapper__option'>
                 { widget.mode === 'viewMode' ? (
-                    <span className='glyphicon glyphicon-fullscreen'></span>
+                        <span className='glyphicon glyphicon-fullscreen'></span>
                     ) : (
-                    <div>
-                        <span className='glyphicon glyphicon-cog'></span>
-                        <span styleName='widget-header-wrapper__option__center' className='glyphicon glyphicon-fullscreen'></span>
-                        <span className='glyphicon glyphicon-remove'></span> 
-                    </div>
-                    )   
+                        <div>
+                            <span className='glyphicon glyphicon-cog'/>
+                            <span styleName='widget-header-wrapper__option__center'
+                                  className='glyphicon glyphicon-fullscreen'/>
+                            <span className='glyphicon glyphicon-remove'/>
+                        </div>
+                    )
                 }
             </div>
         </div>

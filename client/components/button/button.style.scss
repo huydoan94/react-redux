@@ -1,0 +1,28 @@
+@import "../../assets/styles/foundation/helpers/bem";
+
+@include bem-b('simple-button') {
+    border-radius: 5px;
+    border: 1px solid #cbcbcb;
+    background-color: #fff;
+}
+
+@include bem-b('simple-center-button') {
+    border-radius: 5px;
+    border: 1px solid #cbcbcb;
+    background-color: #fff;
+    margin: 0 5px;
+}
+
+@include bem-b('no-border-button') {
+    border: none;
+    background-color: #fff;
+}
+
+@include bem-b('delete-item-btn') {
+    border: none;
+    background-color: #fff;
+    color: #a6312a;
+    float: right;
+    padding: 5px 15px 0 0;
+    // visibility: hidden;
+}

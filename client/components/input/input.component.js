@@ -1,14 +1,13 @@
 import React from 'react';
 import InputView from './input.view';
 
-class Input extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+export class Input extends React.Component {
 
     render() {
-        return <InputView inputDetail={this.props.inputAtrribute} getInputValue={this.props.getInputValue}/>;
+        return <InputView
+                    inputDetail={this.props.inputAtrribute}
+                    getInputValue={this.props.getInputValue}
+                    onEnter={this.props.onEnter}
+                />;
     }
 }
-
-export default Input;

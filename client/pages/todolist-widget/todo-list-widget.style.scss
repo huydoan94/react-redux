@@ -1,0 +1,21 @@
+@import "../../assets/styles/foundation/helpers/bem";
+
+@include bem-b('widget-container') {
+    @include bem-e('todo-list-option') { 
+        padding: 0 5px;
+        font-weight: 600;
+        margin-top: -5px;
+    }
+}
+
+@include bem-b('padding-right-20') {
+    padding-right: 20px;
+}
+
+@include bem-b('right-postion') {
+    float: right;
+}
+
+@include bem-b('margin-x-10') {
+    margin: 0 10px;
+}

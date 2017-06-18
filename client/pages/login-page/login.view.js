@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Input from '../../components/input/input.component';
+import { Input } from '../../components/input';
 
 const LoginView = ({inputUsername, inputPassword, setUsername, setPassword, onLoginClick}) => {
     return ( 

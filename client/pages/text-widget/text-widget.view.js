@@ -9,7 +9,7 @@ import { WidgetBody } from '../../components/widgetBody';
 
 export const TextWidgetView = cssModules(({widget}) => {
     return (
-        <WidgetContainer styleName='widget-container'>
+        <WidgetContainer>
             <WidgetHeader widget={widget} />
             <WidgetBody>
                 <div styleName='widget-container__text'>

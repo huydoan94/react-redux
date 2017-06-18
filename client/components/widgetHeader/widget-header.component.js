@@ -9,12 +9,12 @@ import { WidgetHeaderView } from './widget-header.view';
 //     }
 
 //     render() {
-//         return <WidgetHeaderView widget={this.props.widget} /> 
+//         return <WidgetHeaderView widget={this.props.widget} />;
 //     }
 // };
 
 // export default WidgetHeader;
 
 export const WidgetHeader = ({widget}) => {
-    return <WidgetHeaderView widget={widget} /> 
+    return <WidgetHeaderView widget={widget} />;
 };

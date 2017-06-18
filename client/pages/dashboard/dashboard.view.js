@@ -1,10 +1,11 @@
 import React from 'react';
 import {Button, ButtonGroup} from 'react-bootstrap';
 import cssModules from 'react-css-modules';
-import {Todos} from './components';
+// import {Todos} from './components';
 import style from './dashboard.style.scss';
 
 import { TextWidget } from '../text-widget';
+import TodoListWidget from '../todolist-widget/todo-list-widget.component';
 
 export const DashboardView = cssModules(({dashboard}) => {
     return (
@@ -22,6 +23,7 @@ export const DashboardView = cssModules(({dashboard}) => {
             <div styleName='dashboard__body'>
                 Dashboard
                 <TextWidget />
+                <TodoListWidget />
             </div>
         </div>
     );
