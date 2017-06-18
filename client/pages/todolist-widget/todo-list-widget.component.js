@@ -9,6 +9,9 @@ const widget = {
     mode: 'editMode'
 };
 
+let numberCompleted = 0;
+let isFillterCompleted = false;
+
 class TodoListWidget extends React.Component {
     constructor(props) {
         super(props);
@@ -23,6 +26,7 @@ class TodoListWidget extends React.Component {
         this.showAllBtn = {
             buttonContent: 'All',
             onButtonClick: () => {
+                isFillterCompleted = false;
                 this.dispatch(getAllTodo());
             }
         };
@@ -30,6 +34,7 @@ class TodoListWidget extends React.Component {
         this.showActiveBtn = {
             buttonContent: 'Active',
             onButtonClick: () => {
+                isFillterCompleted = false;
                 const type = 'SHOW_ACTIVE';
                 const condition = {
                     isCompleted: false
@@ -42,6 +47,7 @@ class TodoListWidget extends React.Component {
         this.showCompletedBtn = {
             buttonContent: 'Completed',
             onButtonClick: () => {
+                isFillterCompleted = true;
                 const type = 'SHOW_COMPLETED';
                 const condition = {
                     isCompleted: true
@@ -81,12 +87,12 @@ class TodoListWidget extends React.Component {
         this.dispatch(addTodo(taskObj));
     }
 
-    getNumberCompleted = (tasks) => {
+    getNumberActive = (tasks) => {
         let count = 0;
         let result = '';
 
         for (let i = 0; i < tasks.length; i++) {
-            if (tasks[i].isCompleted) {
+            if (!tasks[i].isCompleted) {
                 count += 1;
             }
         }
@@ -104,7 +110,7 @@ class TodoListWidget extends React.Component {
         let result = [];
 
         for (let i = 0; i < tasks.length; i++) {
-            if (tasks[i].isCompleted) {
+            if (!tasks[i].isCompleted) {
                 result.push(tasks[i].id);
             }
         }
@@ -114,7 +120,10 @@ class TodoListWidget extends React.Component {
 
     render() {
         const tasks = this.props.todoList;
-        let numberCompleted = this.getNumberCompleted(tasks);
+
+        if (!isFillterCompleted) {
+            numberCompleted = this.getNumberActive(tasks);
+        }
 
         return <TodoListWidgetView
             widget={widget}
