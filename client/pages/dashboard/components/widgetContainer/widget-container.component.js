@@ -4,7 +4,7 @@ import style from './widget-container.style.scss';
 
 export const WidgetContainer = cssModules((props) => {
     return (
-        <div styleName='widget-container' style={{minHeight: '230px'}}>
+        <div styleName='widget-container'>
             {props.children}
         </div>
     );

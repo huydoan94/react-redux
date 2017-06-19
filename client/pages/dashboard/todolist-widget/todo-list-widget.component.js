@@ -1,16 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { getAllTodo, addTodo, fillterTodo, deleteCompletedTodo } from './todo-list.action';
+import { getAllTodo, addTodo, filterTodo, deleteCompletedTodo } from './todo-list.action';
 import { TodoListWidgetView } from './todo-list-widget.view';
 
-const widget = {
-    title: 'Todo List Widget',
-    mode: 'editMode'
-};
-
 let numberCompleted = 0;
-let isFillterCompleted = false;
+let isFilterCompleted = false;
 
 class TodoListWidget extends React.Component {
     constructor(props) {
@@ -19,61 +14,86 @@ class TodoListWidget extends React.Component {
     }
 
     init = () => {
+        this.widget = {
+            title: 'Todo List Widget',
+            mode: 'editMode'
+        };
+
         this.inputAddTodo = {
             placeholder: 'What need to be done?'
         };
 
         this.showAllBtn = {
-            buttonContent: 'All',
-            onButtonClick: () => {
-                isFillterCompleted = false;
-                this.dispatch(getAllTodo());
+            attribute: {
+                buttonContent: 'All',
+                buttonStyle: 'simple-button'
+            },
+            event: {
+                onButtonClick: () => {
+                    isFilterCompleted = false;
+                    this.dispatch(getAllTodo());
+                }
             }
         };
 
         this.showActiveBtn = {
-            buttonContent: 'Active',
-            onButtonClick: () => {
-                isFillterCompleted = false;
-                const type = 'SHOW_ACTIVE';
-                const condition = {
-                    isCompleted: false
-                };
+            attribute: {
+                buttonContent: 'Active',
+                buttonStyle: 'simple-center-button'
+            },
+            event: {
+                onButtonClick: () => {
+                    isFilterCompleted = false;
+                    let type = 'SHOW_ACTIVE';
+                    let condition = {
+                        isCompleted: false
+                    };
 
-                this.fillterItem(type, condition);
+                    this.filterItem(type, condition);
+                }
             }
         };
 
         this.showCompletedBtn = {
-            buttonContent: 'Completed',
-            onButtonClick: () => {
-                isFillterCompleted = true;
-                const type = 'SHOW_COMPLETED';
-                const condition = {
-                    isCompleted: true
-                };
+            attribute: {
+                buttonContent: 'Completed',
+                buttonStyle: 'simple-button'
+            },
+            event: {
+                onButtonClick: () => {
+                    isFilterCompleted = true;
+                    let type = 'SHOW_COMPLETED';
+                    let condition = {
+                        isCompleted: true
+                    };
 
-                this.fillterItem(type, condition);
+                    this.filterItem(type, condition);
+                }
             }
         };
 
         this.clearCompletedBtn = {
-            buttonContent: 'Clear Completed',
-            onButtonClick: () => {
-                const arrayId = this.getCompletedItem();
+            attribute: {
+                buttonContent: 'Clear Completed',
+                buttonStyle: 'no-border-button'
+            },
+            event: {
+                onButtonClick: () => {
+                    let arrayId = this.getCompletedItem();
 
-                this.dispatch(deleteCompletedTodo(arrayId));
+                    this.dispatch(deleteCompletedTodo(arrayId));
+                }
             }
         };
 
-        const { dispatch } = this.props;
+        let { dispatch } = this.props;
 
         this.dispatch = dispatch;
         this.dispatch(getAllTodo());
     }
 
-    fillterItem = (type, condition) => {
-        this.dispatch(fillterTodo(type, condition));
+    filterItem = (type, condition) => {
+        this.dispatch(filterTodo(type, condition));
     };
 
     onEnter = (ref) => {
@@ -114,12 +134,12 @@ class TodoListWidget extends React.Component {
     render() {
         const tasks = this.props.todoList;
 
-        if (!isFillterCompleted) {
+        if (!isFilterCompleted) {
             numberCompleted = this.getNumberActive(tasks);
         }
 
         return <TodoListWidgetView
-            widget={widget}
+            widget={this.widget}
             inputAddTodo={this.inputAddTodo}
             onEnter={this.onEnter}
             showAllBtn={this.showAllBtn}

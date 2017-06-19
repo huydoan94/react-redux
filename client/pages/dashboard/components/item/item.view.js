@@ -15,12 +15,11 @@ export const ItemView = cssModules(({ item, buttonDeleteItem, updateItem }) => {
             />
             <label
                 htmlFor={item.id}
-                styleName= {item.isCompleted ? 'item-completed' : null }
-                style={{paddingLeft: '15px'}}
-            >
-                {item.task}
+                styleName={item.isCompleted ? 'item-completed' : null}
+                style={{ paddingLeft: '15px' }}>
+            {item.task}
             </label>
-            <Button classButton='delete-item-btn' buttonDetail={buttonDeleteItem} />
+            <Button buttonAttribute={buttonDeleteItem.attribute} buttonEvent={buttonDeleteItem.event} />
         </li>
     );
 }, style);

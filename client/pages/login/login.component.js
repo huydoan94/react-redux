@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import {loginRequest} from './login.action';
+import { loginRequest } from './login.action';
 import LoginView from './login.view';
 
 class LoginForm extends Component {
@@ -9,18 +8,19 @@ class LoginForm extends Component {
         super(props);
 
         const { dispatch } = this.props;
+
         this.dispatch = dispatch;
 
         this.inputUsername = {
             type: 'text',
             placeholder: 'Username',
-            value: '',
+            value: ''
         };
 
         this.inputPassword = {
             type: 'text',
             placeholder: 'Password',
-            value: '',
+            value: ''
         };
     }
 
@@ -29,6 +29,7 @@ class LoginForm extends Component {
             username: this.inputUsername.value,
             password: this.inputPassword.value
         };
+
         this.dispatch(loginRequest(account));
     }
 
@@ -42,15 +43,15 @@ class LoginForm extends Component {
 
     render() {
         return (
-            <LoginView 
-                inputUsername={this.inputUsername} 
-                inputPassword={this.inputPassword} 
+            <LoginView
+                inputUsername={this.inputUsername}
+                inputPassword={this.inputPassword}
                 setUsername={this.setUsername}
                 setPassword={this.setPassword}
                 onLoginClick={this.LoginClick}
             />
-        )
-    };
-};
+        );
+    }
+}
 
 export default connect()(LoginForm);

@@ -6,14 +6,15 @@ import style from './dashboard.style.scss';
 
 import { TextWidget } from './text-widget';
 import TodoListWidget from './todolist-widget/todo-list-widget.component';
-import { TextWidgetSetting } from './text-widget-setting';
+import { WidgetSetting } from './widget-setting';
+import { DatabaseWidget } from './database-widget';
 
 export const DashboardView = cssModules(({ dashboard }) => {
     return (
         <div>
             <div styleName='dashboard__title'>
-                <h4>{dashboard.title}</h4>
-                <div>
+                <h4 styleName='dashboard__title__header'>{dashboard.title}</h4>
+                <div styleName='dashboard__title__buttons'>
                     <ButtonGroup>
                         <Button>Left</Button>
                         <Button>Middle</Button>
@@ -21,10 +22,13 @@ export const DashboardView = cssModules(({ dashboard }) => {
                     </ButtonGroup>
                 </div>
             </div>
-            <div styleName='dashboard__body'>
+            <div className='col-md-12'>
                 <TextWidget />
+                <DatabaseWidget />
                 <TodoListWidget />
-                <TextWidgetSetting />
+            </div>
+            <div className='col-md-12'>
+                <WidgetSetting />
             </div>
         </div>
     );

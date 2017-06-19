@@ -3,7 +3,7 @@ export const login = (account) => {
         fetch('http://localhost:8080/api/accounts/login', {
             method: 'POST',
             headers: new Headers({
-                'content-type': 'application/json',
+                'content-type': 'application/json'
             }),
             body: JSON.stringify(account)
         }).then((response) => {
@@ -21,4 +21,4 @@ export const login = (account) => {
             reject(error);
         });
     });
-}
+};

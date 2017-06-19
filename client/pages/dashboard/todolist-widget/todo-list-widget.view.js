@@ -33,11 +33,11 @@ export const TodoListWidgetView = cssModules((props) => {
                 />
                 <div styleName="widget-container__todo-list-option">
                     <span styleName="padding-right-20">{numberCompleted}</span>
-                    <Button classButton="simple-button" buttonDetail={showAllBtn}></Button>
-                    <Button classButton="simple-center-button" buttonDetail={showActiveBtn}></Button>
-                    <Button classButton="simple-button" buttonDetail={showCompletedBtn}></Button>
+                    <Button buttonAttribute={showAllBtn.attribute} buttonEvent={showAllBtn.event}></Button>
+                    <Button buttonAttribute={showActiveBtn.attribute} buttonEvent={showActiveBtn.event}></Button>
+                    <Button buttonAttribute={showCompletedBtn.attribute} buttonEvent={showCompletedBtn.event}></Button>
                     <div styleName="right-postion">
-                        <Button classButton="no-border-button" buttonDetail={clearCompletedBtn}></Button>
+                        <Button buttonAttribute={clearCompletedBtn.attribute} buttonEvent={clearCompletedBtn.event}></Button>
                     </div>
                 </div>
                 <ItemList items={tasks} />

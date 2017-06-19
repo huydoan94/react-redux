@@ -14,8 +14,13 @@ class Item extends Component {
         };
 
         this.buttonDeleteItem = {
-            buttonContent: <span className='glyphicon glyphicon-remove'></span>,
-            onButtonClick: this.handleDeleteButtonClick
+            attribute: {
+                buttonContent: <span className='glyphicon glyphicon-remove'></span>,
+                buttonStyle: 'delete-item-btn'
+            },
+            event: {
+                onButtonClick: this.handleDeleteButtonClick
+            }
         };
 
         const { dispatch } = this.props;

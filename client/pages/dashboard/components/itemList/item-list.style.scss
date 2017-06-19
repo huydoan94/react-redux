@@ -1,0 +1,10 @@
+@import '../../../../assets/styles/foundation/helpers/bem';
+
+@include bem-b('list') {
+    @include bem-e('container') {
+        list-style-type: none;
+        padding: 0;
+        margin: 7px 0 0 0;
+        overflow: auto;
+    }
+}

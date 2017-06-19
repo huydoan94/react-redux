@@ -5,9 +5,9 @@ export class Input extends React.Component {
 
     render() {
         return <InputView
-                    inputDetail={this.props.inputAtrribute}
-                    getInputValue={this.props.getInputValue}
-                    onEnter={this.props.onEnter}
-                />;
+            inputAtrribute={this.props.inputAtrribute}
+            inputValue={this.props.inputValue}
+            onEnter={this.props.onEnter}
+        />;
     }
 }

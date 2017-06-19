@@ -2,12 +2,18 @@
 
 @include bem-b('dashboard') {
     @include bem-e('title') {
-        display: flex;
-        justify-content: space-between;
+        display: block;
+        width: 100%;
+        padding-bottom: 5px;
         border-bottom: 1px solid #dddddd;
-    }
-    @include bem-e('body') {
-        display: flex;
-        justify-content: space-around;
+
+        @include bem-e('header') {
+            display: inline-block;
+        }
+
+        @include bem-e('buttons') {
+            display: inline-block;
+            float: right;
+        }
     }
 }

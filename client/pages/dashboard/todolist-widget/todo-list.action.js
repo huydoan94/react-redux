@@ -1,4 +1,4 @@
-import { getAll, add, fillter, update, deleteItem } from './todo-list.service';
+import { getAll, add, filter, update, deleteItem } from './todo-list.service';
 
 const returnTodos = (type, todos) => {
     return { type, todos };
@@ -8,47 +8,36 @@ const returnTodos = (type, todos) => {
 
 export const getAllTodo = () => (dispatch) => {
     return getAll().then((result) => {
-        if (result !== 'error') {
-            dispatch(returnTodos('SHOW_ALL', result));
-        }
+        dispatch(returnTodos('SHOW_ALL', result));
     });
 };
 
 // ======================================================ADD================================
 export const addTodo = (todo) => (dispatch) => {
     return add(todo).then((result) => {
-        if (result !== 'error') {
-            dispatch(returnTodos('ADD_TODO', result));
-        }
+        dispatch(returnTodos('ADD_TODO', result));
     });
 };
 
-// ============================FILLTER==================================================
-export const fillterTodo = (fillterType, condition) => (dispatch) => {
-    return fillter(condition).then((result) => {
-        if (result !== 'error') {
-            dispatch(returnTodos(fillterType, result));
-        }
+// ============================FILTER==================================================
+export const filterTodo = (filterType, condition) => (dispatch) => {
+    return filter(condition).then((result) => {
+        dispatch(returnTodos(filterType, result));
     });
 };
 
 // ===============================UPDATE==============================================
 export const updateTodo = (id, condition) => (dispatch) => {
     return update(id, condition).then((result) => {
-        if (result !== 'error') {
-            result.id = parseInt(result.id, 10);
-            dispatch(returnTodos('UPDATE_TODO', result));
-        }
+        dispatch(returnTodos('UPDATE_TODO', result));
     });
 };
 
 // =================================DELETE========================================
 export const deleteTodo = (id) => (dispatch) => {
     return deleteItem(id).then((result) => {
-        if (result !== 'error') {
-            result.id = id;
-            dispatch(returnTodos('DELETE_TODO', result));
-        }
+        result.id = id;
+        dispatch(returnTodos('DELETE_TODO', result));
     });
 };
 
@@ -56,10 +45,8 @@ export const deleteTodo = (id) => (dispatch) => {
 export const deleteCompletedTodo = (arrayId) => (dispatch) => {
     arrayId.forEach((Id) => {
         deleteItem(Id).then((result) => {
-            if (result !== 'error') {
-                result.id = Id;
-                dispatch(returnTodos('DELETE_TODO', result));
-            }
+            result.id = Id;
+            dispatch(returnTodos('DELETE_TODO', result));
         });
     });
 };

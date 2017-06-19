@@ -6,7 +6,7 @@ import Item from '../item/item.component';
 
 export const ItemListView = cssModules(({ items }) => {
     return (
-        <ul style={{'listStyleType': 'none', 'padding': 0, 'margin': '7px 0 0 0'}}>
+        <ul styleName='list__container' className='col-md-12'>
             {items.map((item) =>
                 <Item key={item.id} itemObj={item} />)
             }

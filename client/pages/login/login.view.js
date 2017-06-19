@@ -1,12 +1,12 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { Input } from '../../components/input';
 
-const LoginView = ({inputUsername, inputPassword, setUsername, setPassword, onLoginClick}) => {
-    return ( 
+const LoginView = ({ inputUsername, inputPassword, setUsername, setPassword, onLoginClick }) => {
+    return (
         <div>
             <h2>Login to Your Account</h2>
-            <Input inputAtrribute={inputUsername} getInputValue={setUsername}/>
-            <Input inputAtrribute={inputPassword} getInputValue={setPassword}/>
+            <Input inputAtrribute={inputUsername} inputValue={setUsername} />
+            <Input inputAtrribute={inputPassword} inputValue={setPassword} />
             <button onClick={onLoginClick}>Login</button>
         </div>
     );

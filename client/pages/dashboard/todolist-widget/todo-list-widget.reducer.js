@@ -24,7 +24,7 @@ export const todos = (state = [], action) => {
         return state;
 
     case 'UPDATE_TODO': {
-        let tempState = state.slice();
+        let tempState = Object.assign([], state);
         const index = tempState.findIndex((e) => parseInt(e.id, 10) === action.todos.id);
 
         if (index > notfound) {

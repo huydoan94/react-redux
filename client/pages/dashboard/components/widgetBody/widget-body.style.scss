@@ -1,8 +1,5 @@
 @import "../../../../assets/styles/foundation/helpers/bem";
 
 @include bem-b('widget-body') {
-    width: 100%;
-    position: absolute;
-    top: 40px;
-    left: 0;
+    padding-top: 10px;
 }

@@ -1,30 +1,27 @@
 import React, { Component } from 'react';
-
 import cssModules from 'react-css-modules';
 import style from './input.style.scss';
-
-let inputDetail = {};
 
 class InputView extends Component {
     constructor(props) {
         super(props);
 
-        inputDetail = this.props.inputDetail;
+        this.inputAtrribute = this.props.inputAtrribute;
     }
 
-    onInputChange = () => {
+    onInputChange = (event) => {
         const ref = this.refs.inputRef;
 
-        if (this.props.getInputValue) {
+        if (this.props.inputValue) {
             if (ref) {
-                this.props.getInputValue(ref);
+                this.props.inputValue(ref);
             }
         }
     }
 
-    hanleKeyPress = (e) => {
+    onKeyPress = (event) => {
         if (this.props.onEnter) {
-            if (e.key === 'Enter') {
+            if (event.key === 'Enter') {
                 const ref = this.refs.inputRef;
 
                 if (ref) {
@@ -35,16 +32,18 @@ class InputView extends Component {
     }
 
     render = cssModules(() => {
+        const { type, placeholder, inputClass, label } = this.inputAtrribute;
+
         return (
             <div className="form-group">
-                <label className="control-label">{inputDetail.label}</label>
+                <label className="control-label">{label}</label>
                 <input
-                    styleName={inputDetail.inputClass ? inputDetail.inputClass : 'simpleInput'}
-                    type={inputDetail.type}
-                    placeholder={inputDetail.placeholder}
-                    ref="inputRef"
+                    type={type}
+                    placeholder={placeholder}
+                    styleName={inputClass ? inputClass : 'simpleInput'}
                     onChange={this.onInputChange}
-                    onKeyPress={this.hanleKeyPress}
+                    onKeyPress={this.onKeyPress}
+                    ref="inputRef"
                 />
             </div>
         );
