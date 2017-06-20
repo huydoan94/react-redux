@@ -4,7 +4,7 @@ import style from './widget-body.style.scss';
 
 export const WidgetBody = cssModules((props) => {
     return (
-        <div styleName='widget-body'>
+        <div className='panel-body col-md-12'>
             {props.children}
         </div>
     );

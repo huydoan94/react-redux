@@ -2,7 +2,6 @@
 
 @include bem-b('widget-header-wrapper') {
     background-color: #1E5281;
-    padding: 5px 15px;
 
     @include bem-e('title') {
         display: inline-block;

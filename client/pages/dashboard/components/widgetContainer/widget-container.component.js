@@ -4,7 +4,7 @@ import style from './widget-container.style.scss';
 
 export const WidgetContainer = cssModules((props) => {
     return (
-        <div styleName='widget-container'>
+        <div className='panel panel-primary col-md-4' styleName='widget-container'>
             {props.children}
         </div>
     );

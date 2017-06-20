@@ -36,7 +36,7 @@ class InputView extends Component {
 
         return (
             <div className="form-group">
-                <label className="control-label">{label}</label>
+                <label styleName="control-label">{label}</label>
                 <input
                     type={type}
                     placeholder={placeholder}

@@ -16,4 +16,9 @@
             float: right;
         }
     }
+
+    @include bem-e('components') {
+        display: flex;
+        height: 400px;
+    }
 }

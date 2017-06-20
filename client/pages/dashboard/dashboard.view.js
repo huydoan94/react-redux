@@ -22,13 +22,17 @@ export const DashboardView = cssModules(({ dashboard }) => {
                     </ButtonGroup>
                 </div>
             </div>
-            <div className='col-md-12'>
+            <div className='col-md-12' styleName='dashboard__components'>
                 <TextWidget />
                 <DatabaseWidget />
                 <TodoListWidget />
             </div>
-            <div className='col-md-12'>
+            <div className='col-md-12' styleName='dashboard__components'>
                 <WidgetSetting />
+            </div>
+            <div className='col-md-12' styleName='dashboard__components'>
+                <TextWidget />
+                <TextWidget />
             </div>
         </div>
     );

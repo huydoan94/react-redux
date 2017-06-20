@@ -4,7 +4,7 @@ import style from './widget-header.style.scss';
 
 export const WidgetHeaderView = cssModules(({ widget }) => {
     return (
-        <div styleName='widget-header-wrapper'>
+        <div className='panel-heading col-md-12'>
             <div styleName='widget-header-wrapper__title'>
                 {widget.title}
             </div>
