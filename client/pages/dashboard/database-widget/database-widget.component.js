@@ -1,5 +1,6 @@
 import React from 'react';
 import { DatabaseWidgetView } from './database-widget.view';
+import { getAll } from './database-services';
 
 export class DatabaseWidget extends React.Component {
     constructor(props) {
@@ -14,16 +15,29 @@ export class DatabaseWidget extends React.Component {
             mode: 'editMode'
         };
 
-        this.EditWidgetValues = {
-            placeholder: 'New Widget',
-            label: 'Widget title: '
+        this.state = {
+            DatabaseTable: {
+                headers: [],
+                values: []
+            }
         };
+
+        getAll().then((datas) => {
+            let values = datas.map((data) => {
+                Reflect.deleteProperty(data, 'meta');
+
+                return data;
+            });
+            let headers = Object.keys(values[0]);
+
+            this.setState({DatabaseTable: {...this.state.DatabaseTable, headers, values}});
+        });
     }
 
     render() {
         return <DatabaseWidgetView
             WidgetType={this.WidgetType}
-            EditWidgetValues={this.EditWidgetValues}
+            DatabaseTable={this.state.DatabaseTable}
         />;
     }
 }

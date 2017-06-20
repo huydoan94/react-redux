@@ -8,7 +8,6 @@ import { WidgetHeader } from '../components/widgetHeader';
 import { WidgetBody } from '../components/widgetBody';
 import { Input } from '../../../components/input';
 import { Select } from '../../../components/select';
-import {TextSettingView} from './subViews/textSetting.view';
 
 export class WidgetSettingView extends Component {
     render = cssModules(() => {
@@ -18,7 +17,7 @@ export class WidgetSettingView extends Component {
                 <WidgetBody className='row col-md-12'>
                     <Input inputAtrribute={this.props.EditWidgetValues} />
                     <Select WidgetSelector={this.props.WidgetSelector} />
-                    <TextSettingView/>
+                    {this.props.subViewSetting}
                 </WidgetBody>
             </WidgetContainer>
         );
