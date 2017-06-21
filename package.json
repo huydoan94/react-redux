@@ -35,20 +35,17 @@
     "material-ui": "^0.15.*",
     "pug": "^2.0.0-beta6",
     "react": "^15.3.*",
+    "react-bootstrap-table": "^3.4.1",
     "react-css-modules": "^3.7.10",
     "react-dom": "^15.3.*",
-    "react-draft-wysiwyg": "^1.10.0",
     "react-immutable-proptypes": "^2.1.0",
     "react-intl": "^2.1.5",
-    "react-markdown-editor": "^0.5.0",
     "react-redux": "^4.4.*",
     "react-router": "^2.8.*",
     "react-router-bootstrap": "^0.23.1",
     "react-router-redux": "^4.0.*",
     "react-rte": "^0.11.0",
     "react-tap-event-plugin": "^1.0.*",
-    "react-wysiwyg-editor": "0.0.9",
-    "reactable": "^0.14.1",
     "redux": "^3.6.*",
     "redux-immutable": "^3.0.8",
     "redux-thunk": "^2.1.*",
@@ -113,5 +110,6 @@
     "webpack-dev-middleware": "^1.8.*",
     "webpack-hot-middleware": "^2.12.*",
     "webpack-merge": "^0.14.*"
-  }
+  },
+  "false": {}
 }

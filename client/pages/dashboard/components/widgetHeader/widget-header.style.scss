@@ -1,7 +1,11 @@
 @import "../../../../assets/styles/foundation/helpers/bem";
 
 @include bem-b('widget-header-wrapper') {
-    background-color: #1E5281;
+    color: white;
+    background-color: #245380;
+    border-color: #245380;
+    padding: 5px 10px;
+    border-bottom: 1px solid transparent;
 
     @include bem-e('title') {
         display: inline-block;

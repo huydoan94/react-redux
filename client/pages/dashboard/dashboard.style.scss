@@ -4,11 +4,13 @@
     @include bem-e('title') {
         display: block;
         width: 100%;
-        padding-bottom: 5px;
-        border-bottom: 1px solid #dddddd;
+        padding: 0 15px 5px 15px;
+        border-bottom: 2px solid #245380;
 
         @include bem-e('header') {
             display: inline-block;
+            font-weight: bold;
+            color: #245380;
         }
 
         @include bem-e('buttons') {
@@ -19,5 +21,6 @@
 
     @include bem-e('components') {
         display: flex;
+        padding-top: 10px;
     }
 }

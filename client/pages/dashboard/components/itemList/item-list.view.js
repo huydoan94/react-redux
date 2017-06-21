@@ -6,7 +6,7 @@ import Item from '../item/item.component';
 
 export const ItemListView = cssModules(({ items }) => {
     return (
-        <ul styleName='list__container' className='col-md-12'>
+        <ul styleName='list__container'>
             {items.map((item) =>
                 <Item key={item.id} itemObj={item} />)
             }

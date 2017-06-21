@@ -40,7 +40,9 @@ export const TodoListWidgetView = cssModules((props) => {
                         <Button buttonAttribute={clearCompletedBtn.attribute} buttonEvent={clearCompletedBtn.event}></Button>
                     </div>
                 </div>
-                <ItemList items={tasks} />
+                <div style={{ overflow: 'auto' }}>
+                    <ItemList items={tasks} />
+                </div>
             </WidgetBody>
         </WidgetContainer>
     );

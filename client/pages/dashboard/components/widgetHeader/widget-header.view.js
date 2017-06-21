@@ -3,15 +3,17 @@ import cssModules from 'react-css-modules';
 import style from './widget-header.style.scss';
 
 export const WidgetHeaderView = cssModules(({ widget }) => {
+    const {title, mode} = widget;
+
     return (
-        <div className='panel-heading col-md-12'>
+        <div styleName='widget-header-wrapper'>
             <div styleName='widget-header-wrapper__title'>
-                {widget.title}
+                {title}
             </div>
             <div styleName='widget-header-wrapper__option'>
-                { widget.mode === 'viewMode' ? (
+                { mode === 'viewMode' ? (
                     <span className='glyphicon glyphicon-fullscreen'></span>
-                ) : widget.mode === 'settingMode' ? (
+                ) : mode === 'settingMode' ? (
                     <span className='glyphicon glyphicon-remove'></span>
                 ) : (
                         <div>

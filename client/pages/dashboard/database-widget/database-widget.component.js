@@ -17,7 +17,7 @@ export class DatabaseWidget extends React.Component {
 
         this.state = {
             DatabaseTable: {
-                headers: [],
+                headers: ["id", "None", "None"],
                 values: []
             }
         };
