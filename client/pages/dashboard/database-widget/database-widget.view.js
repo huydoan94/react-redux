@@ -11,13 +11,9 @@ export const DatabaseWidgetView = ({ WidgetType, DatabaseTable }) => {
     const getCaret = (direction) => {
         switch (direction) {
         case 'asc':
-            return (
-                <span className='glyphicon glyphicon-sort-by-attributes'></span>
-            );
+            return <span className='glyphicon glyphicon-sort-by-attributes'></span>;
         case 'desc':
-            return (
-                <span className='glyphicon glyphicon-sort-by-attributes-alt'></span>
-            );
+            return <span className='glyphicon glyphicon-sort-by-attributes-alt'></span>;
         default:
             return;
         }
@@ -34,6 +30,7 @@ export const DatabaseWidgetView = ({ WidgetType, DatabaseTable }) => {
         paginationPosition: 'top',
         onPageChange: (page, sizePerPage) => {
             console.log(page + ' + ' + sizePerPage);
+            // TODO: Missing showing current contact block
         }
     };
 
@@ -57,6 +54,7 @@ export const DatabaseWidgetView = ({ WidgetType, DatabaseTable }) => {
                                     dataSort={true}
                                     caretRender={getCaret}
                                     isKey={header === 'id'}
+                                    key={header}
                                     width='100%'>
                                     {header}
                                 </TableHeaderColumn>

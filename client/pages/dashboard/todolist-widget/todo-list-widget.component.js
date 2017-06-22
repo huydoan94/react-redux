@@ -10,10 +10,10 @@ let isFilterCompleted = false;
 class TodoListWidget extends React.Component {
     constructor(props) {
         super(props);
-        this.init();
+        this.inititialize();
     }
 
-    init = () => {
+    inititialize = () => {
         this.widget = {
             title: 'Todo List Widget',
             mode: 'editMode'

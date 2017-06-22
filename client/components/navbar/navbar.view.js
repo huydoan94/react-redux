@@ -19,7 +19,7 @@ export const NavbarView = () => {
                 </Navbar.Brand>
             </Navbar.Header>
             <Nav pullRight>
-                <NavDropdown title={title}>
+                <NavDropdown title={title} id='UserDropdown'>
                     <MenuItem>Profile</MenuItem>
                     <MenuItem>Log out</MenuItem>
                 </NavDropdown>
