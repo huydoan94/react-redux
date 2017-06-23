@@ -38,6 +38,7 @@ export class DatabaseWidget extends React.Component {
         return <DatabaseWidgetView
             WidgetType={this.WidgetType}
             DatabaseTable={this.state.DatabaseTable}
+            colStyle={this.props.colStyle}
         />;
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input } from '../../components/input';
 
-const LoginView = ({ inputUsername, inputPassword, setUsername, setPassword, onLoginClick }) => {
+export const LoginView = ({ inputUsername, inputPassword, setUsername, setPassword, onLoginClick }) => {
     return (
         <div>
             <h2>Login to Your Account</h2>
@@ -11,5 +11,3 @@ const LoginView = ({ inputUsername, inputPassword, setUsername, setPassword, onL
         </div>
     );
 };
-
-export default LoginView;

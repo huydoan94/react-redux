@@ -11,7 +11,8 @@ export class WidgetSetting extends React.Component {
 
     init = () => {
         this.state = {
-            subViewSetting: <TextSettingView />
+            subViewSetting: <TextSettingView />,
+            isRevealed: false
         };
 
         this.WidgetType = {
@@ -63,6 +64,10 @@ export class WidgetSetting extends React.Component {
         }
     }
 
+    revealSettings = (event) => {
+        this.setState({ isRevealed: true });
+    }
+
     render() {
         return (
             <WidgetSettingView
@@ -70,6 +75,9 @@ export class WidgetSetting extends React.Component {
                 EditWidgetValues={this.EditWidgetValues}
                 WidgetSelector={this.WidgetSelector}
                 subViewSetting={this.state.subViewSetting}
+                isRevealed={this.state.isRevealed}
+                colStyle={this.props.colStyle}
+                revealSettings={this.revealSettings}
             />
         );
     }

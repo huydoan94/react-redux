@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import cssModules from 'react-css-modules';
 
 import style from './widget-setting.style.scss';
@@ -9,17 +9,30 @@ import { WidgetBody } from '../components/widgetBody';
 import { Input } from '../../../components/input';
 import { Select } from '../../../components/select';
 
-export class WidgetSettingView extends Component {
-    render = cssModules(() => {
-        return (
-            <WidgetContainer>
-                <WidgetHeader widget={this.props.WidgetType} className='row col-md-12' />
-                <WidgetBody className='row col-md-12'>
-                    <Input inputAtrribute={this.props.EditWidgetValues} />
-                    <Select WidgetSelector={this.props.WidgetSelector} />
-                    {this.props.subViewSetting}
-                </WidgetBody>
-            </WidgetContainer>
-        );
-    }, style);
-}
+export const WidgetSettingView = cssModules((props) => {
+    const { WidgetType,
+        EditWidgetValues,
+        WidgetSelector,
+        subViewSetting,
+        colStyle,
+        isRevealed,
+        revealSettings } = props;
+
+    return (
+        <WidgetContainer colStyle={colStyle}>
+            <WidgetHeader widget={WidgetType} className='row col-md-12' />
+            <WidgetBody className='row col-md-12'>
+                { isRevealed ? (
+                        <div>
+                            <Input inputAtrribute={EditWidgetValues} />
+                            <Select WidgetSelector={WidgetSelector} />
+                            {subViewSetting}
+                        </div>
+                    ) : (
+                        <span styleName='plus-icon' onClick={revealSettings}>+</span>
+                    )
+                }
+            </WidgetBody>
+        </WidgetContainer>
+    );
+}, style);

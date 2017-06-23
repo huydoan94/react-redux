@@ -20,7 +20,7 @@
     }
 
     @include bem-e('components') {
-        display: flex;
+        display: block;
         padding-top: 10px;
     }
 }

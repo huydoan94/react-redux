@@ -1,4 +1,4 @@
-import LoginForm from './login.component';
+import { LoginForm } from './login.component';
 
 export const LoginRoute = {
     path: '/login',

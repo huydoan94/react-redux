@@ -4,8 +4,10 @@ import style from './widget-container.style.scss';
 
 export const WidgetContainer = cssModules((props) => {
     return (
-        <div className='panel panel-primary col-md-4' styleName='widget-container'>
-            {props.children}
+        <div className={props.colStyle} style={{padding: '0 2px'}}>
+            <div className='panel panel-primary' styleName='widget-container'>
+                {props.children}
+            </div>
         </div>
     );
-}, style, {errorWhenNotFound: false});
+}, style);

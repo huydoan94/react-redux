@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { loginRequest } from './login.action';
-import LoginView from './login.view';
+import { browserHistory } from 'react-router';
 
-class LoginForm extends Component {
+import { loginRequest } from './login.action';
+import { LoginView } from './login.view';
+
+@connect(state => ({ login: state.login }))
+export class LoginForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -42,6 +45,10 @@ class LoginForm extends Component {
     }
 
     render() {
+        if (sessionStorage.getItem('jwtToken')) {
+            browserHistory.push('/dashboard');
+        }
+
         return (
             <LoginView
                 inputUsername={this.inputUsername}
@@ -53,5 +60,3 @@ class LoginForm extends Component {
         );
     }
 }
-
-export default connect()(LoginForm);

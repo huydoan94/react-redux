@@ -1,0 +1,15 @@
+@import "../../../assets/styles/foundation/helpers/bem";
+
+@include bem-b('plus-icon') {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    color: #767676;
+    background-color: #EEEFF0;
+    text-align: center;
+    font-size: 200px;
+}
+
+@include bem-b('plus-icon:hover') {
+    cursor: pointer;
+}

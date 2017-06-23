@@ -11,6 +11,6 @@ const widget = {
 
 export class TextWidget extends React.Component {
     render() {
-        return <TextWidgetView widget={widget}/>;
+        return <TextWidgetView widget={widget} colStyle={this.props.colStyle}/>;
     }
 }

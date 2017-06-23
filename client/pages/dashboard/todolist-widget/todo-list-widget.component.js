@@ -7,7 +7,8 @@ import { TodoListWidgetView } from './todo-list-widget.view';
 let numberCompleted = 0;
 let isFilterCompleted = false;
 
-class TodoListWidget extends React.Component {
+@connect(state => ({ todoList: state.todos }))
+export class TodoListWidget extends React.Component {
     constructor(props) {
         super(props);
         this.inititialize();
@@ -148,14 +149,7 @@ class TodoListWidget extends React.Component {
             clearCompletedBtn={this.clearCompletedBtn}
             numberCompleted={numberCompleted}
             tasks={tasks}
+            colStyle={this.props.colStyle}
         />;
     }
 }
-
-const mapStateToProps = (state) => {
-    return {
-        todoList: state.todos
-    };
-};
-
-export default connect(mapStateToProps)(TodoListWidget);

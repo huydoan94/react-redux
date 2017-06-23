@@ -1,14 +1,21 @@
-import {login} from './login.service';
+import { login } from './login.service';
 
-const loginAction = () => {
+const loginAction = {
+    LOGIN_SUCCESS: 'LOGIN_SUCCESS'
+};
+
+const objectifier = (type, loginData) => {
     return {
-        type: 'login'
+        type,
+        loginData
     };
-}
+};
 
 export const loginRequest = (account) => (dispatch) => {
     login(account).then((response) => {
-        console.log(response);
-        dispatch(loginAction);
+        const token = response.token;
+
+        sessionStorage.setItem('jwtToken', token);
+        dispatch(objectifier(loginAction.LOGIN_SUCCESS, token));
     });
-}
+};

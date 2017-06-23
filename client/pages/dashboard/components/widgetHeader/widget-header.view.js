@@ -27,4 +27,4 @@ export const WidgetHeaderView = cssModules(({ widget }) => {
             </div>
         </div>
     );
-}, style, { errorWhenNotFound: false });
+}, style);

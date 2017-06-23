@@ -1,6 +1,5 @@
 import { App } from './app';
-import { DashboardRoute, LoginRoute, NotFoundRoute } from './pages';
-import LoginForm from './pages/login/login.component';
+import { LoginForm, DashboardRoute, LoginRoute, NotFoundRoute } from './pages';
 
 export const AppRoute = {
     childRoutes: [

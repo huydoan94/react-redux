@@ -7,9 +7,9 @@ import { WidgetContainer } from '../components/widgetContainer';
 import { WidgetHeader } from '../components/widgetHeader';
 import { WidgetBody } from '../components/widgetBody';
 
-export const TextWidgetView = cssModules(({widget}) => {
+export const TextWidgetView = cssModules(({widget, colStyle}) => {
     return (
-        <WidgetContainer>
+        <WidgetContainer colStyle={colStyle}>
             <WidgetHeader widget={widget} />
             <WidgetBody>
                 <div styleName='widget-container__text'>

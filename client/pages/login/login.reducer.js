@@ -1,5 +1,8 @@
-import { combineReducers } from 'redux';
-
 export const loginPage = (state = {}, action) => {
-    return state;
+    switch (action.type) {
+    case 'LOGIN_SUCCESS':
+        return { ...state, jwtToken: action.loginData };
+    default:
+        return state;
+    }
 };
