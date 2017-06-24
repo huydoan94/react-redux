@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { Nav, Navbar, NavDropdown, MenuItem } from 'react-bootstrap';
+import jwtDecode from 'jwt-decode';
 
 export const NavbarView = () => {
-    const title = <div style={{ display: 'inline' }}>
-                    <span style={{ color: 'white' }} className='glyphicon glyphicon-user'></span>
-                    <span style={{ color: 'white' }}>&nbsp;&nbsp;Admin</span>
-                  </div>;
+    const fullName = sessionStorage.getItem('jwtToken') ? jwtDecode(sessionStorage.getItem('jwtToken')).fullname : '',
+        title = <div style={{ display: 'inline' }}>
+            <span style={{ color: 'white' }} className='glyphicon glyphicon-user'></span>
+            <span style={{ color: 'white' }}>&nbsp;&nbsp;{fullName}</span>
+        </div>;
 
     return (
         <Navbar inverse fixedTop fluid style={{ backgroundColor: '#245380' }}>

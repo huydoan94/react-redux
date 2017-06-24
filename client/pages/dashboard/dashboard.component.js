@@ -2,6 +2,8 @@ import React from 'react';
 import { DashboardView } from './dashboard.view';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import jwtDecode from 'jwt-decode';
+
 
 import { fetchDashboard, changeLayout } from './dashboard.action';
 
@@ -19,7 +21,7 @@ export class Dashboard extends React.Component {
             browserHistory.push('/login');
         }
 
-        props.dispatch(fetchDashboard(1)); // change to User ID later
+        props.dispatch(fetchDashboard(jwtDecode(sessionStorage.getItem('jwtToken')).id));
     }
 
     fillWithEmptyWidget = (widgets) => {
@@ -88,7 +90,7 @@ export class Dashboard extends React.Component {
     }
 
     changeLayout = (event) => {
-        this.props.dispatch(changeLayout(parseInt(event.target.value, 10), 20));
+        this.props.dispatch(changeLayout(parseInt(event.target.value, 10), this.props.dashboard.id));
     }
 
     render() {

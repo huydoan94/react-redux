@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import cssModules from 'react-css-modules';
-// import {Todos} from './components';
 import style from './dashboard.style.scss';
 
 export const DashboardView = cssModules(({ title, layoutType, widgets, changeLayout }) => {
