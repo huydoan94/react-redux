@@ -5,7 +5,7 @@ import { WidgetContainer } from '../components/widgetContainer';
 import { WidgetHeader } from '../components/widgetHeader';
 import { WidgetBody } from '../components/widgetBody';
 
-export const DatabaseWidgetView = ({ WidgetType, DatabaseTable, colStyle }) => {
+export const DatabaseWidgetView = ({ WidgetType, DatabaseTable, colStyle, maxHeight }) => {
     const { headers, values } = DatabaseTable;
 
     const getCaret = (direction) => {
@@ -35,7 +35,7 @@ export const DatabaseWidgetView = ({ WidgetType, DatabaseTable, colStyle }) => {
     };
 
     return (
-        <WidgetContainer colStyle={colStyle}>
+        <WidgetContainer colStyle={colStyle} maxHeight={maxHeight}>
             <WidgetHeader widget={WidgetType} className='row col-md-12' />
             <WidgetBody className='row col-md-12'>
                 <div style={{ overflow: 'auto' }}>

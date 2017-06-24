@@ -20,13 +20,14 @@ export const TodoListWidgetView = cssModules((props) => {
         clearCompletedBtn,
         numberCompleted,
         tasks,
-        colStyle
+        colStyle,
+        maxHeight
         } = props;
 
     inputAddTodo.inputClass = 'add-new-item-input';
 
     return (
-        <WidgetContainer colStyle={colStyle}>
+        <WidgetContainer colStyle={colStyle} maxHeight={maxHeight}>
             <WidgetHeader widget={widget} />
             <WidgetBody>
                 <Input inputAtrribute={inputAddTodo}

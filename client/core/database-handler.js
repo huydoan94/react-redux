@@ -1,12 +1,13 @@
 export const interactWithServer = (url, method, data) => {
-    const request = {};
     const jwtToken = sessionStorage.getItem('jwtToken');
-
-    request.headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${jwtToken}`
+    const request = {
+        headers: {
+            'Authorization': `Bearer ${jwtToken}`,
+            'Content-Type': 'application/json'
+        },
+        method
     };
-    request.method = method;
+
     if (data) {
         request.body = JSON.stringify(data);
     }

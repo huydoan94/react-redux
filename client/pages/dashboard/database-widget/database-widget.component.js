@@ -39,6 +39,7 @@ export class DatabaseWidget extends React.Component {
             WidgetType={this.WidgetType}
             DatabaseTable={this.state.DatabaseTable}
             colStyle={this.props.colStyle}
+            maxHeight={this.props.userHeight}
         />;
     }
 }

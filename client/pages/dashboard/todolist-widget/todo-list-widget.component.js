@@ -150,6 +150,7 @@ export class TodoListWidget extends React.Component {
             numberCompleted={numberCompleted}
             tasks={tasks}
             colStyle={this.props.colStyle}
+            maxHeight={this.props.userHeight}
         />;
     }
 }

@@ -8,9 +8,11 @@ export const DashboardView = cssModules(({ title, layoutType, widgets, changeLay
         let blocks = [],
             finalBlocks = [],
             indexOffset = 1,
-            template = (blockWidgets) => {
+            template = (blockWidgets, index) => {
                 return (
-                    <div styleName='dashboard__components' className='col-md-12'>
+                    <div key={`widgetBlockPos_${index}`}
+                        styleName='dashboard__components'
+                        className='col-md-12'>
                         { blockWidgets.map((blockWidget) => blockWidget) }
                     </div>
                 );
@@ -20,7 +22,7 @@ export const DashboardView = cssModules(({ title, layoutType, widgets, changeLay
             blocks.push(widget);
 
             if (!((index + indexOffset) % columnLayout)) {
-                finalBlocks.push(template(blocks));
+                finalBlocks.push(template(blocks, (index + indexOffset) / columnLayout));
                 blocks.length = 0;
             }
         });
@@ -40,7 +42,7 @@ export const DashboardView = cssModules(({ title, layoutType, widgets, changeLay
                     </ButtonGroup>
                 </div>
             </div>
-            {combineWidgetToBlock(widgets, layoutType).map((block) => {
+            { combineWidgetToBlock(widgets, layoutType).map((block) => {
                 return block;
             })}
         </div>

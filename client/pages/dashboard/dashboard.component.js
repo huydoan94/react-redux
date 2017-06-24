@@ -17,7 +17,7 @@ export class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
-        if (sessionStorage.getItem('jwtToken') === null) {
+        if (!sessionStorage.getItem('jwtToken')) {
             browserHistory.push('/login');
         }
 
@@ -30,25 +30,29 @@ export class Dashboard extends React.Component {
             incrementNumber = 1,
             singleCol = 1,
             doubleCol = 2,
-            tripleCol = 3,
-            getColStyle = () => {
-                switch (this.props.dashboard.layoutColumn) {
-                case singleCol:
-                    return 'col-md-12';
-                case doubleCol:
-                    return 'col-md-6';
-                case tripleCol:
-                    return 'col-md-4';
-                default:
-                    return 'col-md-12';
+            tripleCol = 3;
+
+        const getColStyle = () => {
+            switch (this.props.dashboard.layoutColumn) {
+            case singleCol:
+                return 'col-md-12';
+            case doubleCol:
+                return 'col-md-6';
+            case tripleCol:
+                return 'col-md-4';
+            default:
+                return 'col-md-12';
+            }
+        };
+
+        const fillDashboard = (currentWidgets, columnLayout) => {
+            for (let index = 0; index < currentWidgets.length; index += incrementNumber) {
+                if (typeof currentWidgets[index] === 'undefined') {
+                    currentWidgets[index] = <WidgetSetting key={`widgetPos_${index + incrementNumber}`}
+                                                    id={`widgetPos_${index + incrementNumber}`}
+                                                    colStyle={getColStyle()}/>;
                 }
-            },
-            fillDashboard = (currentWidgets, columnLayout) => {
-                for (let index = 0; index < currentWidgets.length; index += incrementNumber) {
-                    if (typeof widgetArray[index] === 'undefined') {
-                        widgetArray[index] = <WidgetSetting colStyle={getColStyle()}/>;
-                    }
-                }
+            }
 
                 // E.g: current widgets = 5, layout = 3
                 // missing = 3 - ( 5 % 3 ) = 3 - 2 = 1 => fill in 1 widget
@@ -61,25 +65,38 @@ export class Dashboard extends React.Component {
                 // E.g 3: current widgets = 5, layout = 2
                 // missing = 2 - ( 5 % 2 ) = 2 - 1 = 1 => fill in 1 widget
                 // => total widgets = 5 + 1 = 6 ratio 2 / 2 / 2
-                let missingWidget = columnLayout - (currentWidgets.length % columnLayout);
+            let missingWidget = columnLayout - (currentWidgets.length % columnLayout);
 
-                for (let index = 0; index < missingWidget; index += incrementNumber) {
-                    widgetArray.push(<WidgetSetting colStyle={getColStyle()}/>);
-                }
+            for (let index = 0; index < missingWidget; index += incrementNumber) {
+                currentWidgets.push(<WidgetSetting key={`widgetPos_${currentWidgets.length}`}
+                                            id={`widgetPos_${currentWidgets.length}`}
+                                            colStyle={getColStyle()}/>);
+            }
 
-                return widgetArray;
-            };
+            return currentWidgets;
+        };
 
         widgets.forEach((widget) => {
+            const { maxWidth, maxHeight } = widget;
+
             switch (widget.widgetType) {
             case 'TEXT_WIDGET':
-                widgetArray[widget.position + positionOffset] = <TextWidget colStyle={getColStyle()} />;
+                widgetArray[widget.position + positionOffset] = <TextWidget key={`widgetPos_${widget.position}`}
+                                                                    id={`widgetPos_${widget.position}`}
+                                                                    colStyle={getColStyle()}
+                                                                    userHeight={maxHeight} />;
                 break;
             case 'DATABASE_WIDGET':
-                widgetArray[widget.position + positionOffset] = <DatabaseWidget colStyle={getColStyle()} />;
+                widgetArray[widget.position + positionOffset] = <DatabaseWidget key={`widgetPos_${widget.position}`}
+                                                                    id={`widgetPos_${widget.position}`}
+                                                                    colStyle={getColStyle()}
+                                                                    userHeight={maxHeight} />;
                 break;
             case 'TODOLIST_WIDGET':
-                widgetArray[widget.position + positionOffset] = <TodoListWidget colStyle={getColStyle()} />;
+                widgetArray[widget.position + positionOffset] = <TodoListWidget key={`widgetPos_${widget.position}`}
+                                                                    id={`widgetPos_${widget.position}`}
+                                                                    colStyle={getColStyle()}
+                                                                    userHeight={maxHeight} />;
                 break;
             default:
                 break;
