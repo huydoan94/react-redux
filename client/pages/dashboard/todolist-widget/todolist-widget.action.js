@@ -1,4 +1,4 @@
-import { getAll, add, filter, update, deleteItem } from './todo-list.service';
+import { getAll, add, filter, update, deleteItem } from './todolist-widget.service';
 
 const returnTodos = (type, todos) => {
     return { type, todos };

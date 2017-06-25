@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { updateTodo, deleteTodo } from '../../todolist-widget/todo-list.action';
+import { updateTodo, deleteTodo } from '../../todolist-widget/todolist-widget.action';
 import { ItemView } from './item.view';
 
 class Item extends Component {

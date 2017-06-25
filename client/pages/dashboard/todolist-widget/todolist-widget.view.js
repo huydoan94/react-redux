@@ -1,6 +1,6 @@
 import React from 'react';
 import cssModules from 'react-css-modules';
-import style from './todo-list-widget.style.scss';
+import style from './todolist-widget.style.scss';
 
 import { Input } from '../../../components/input';
 import { Button } from '../../../components/button';

@@ -49,28 +49,17 @@ export class Dashboard extends React.Component {
             for (let index = 0; index < currentWidgets.length; index += incrementNumber) {
                 if (typeof currentWidgets[index] === 'undefined') {
                     currentWidgets[index] = <WidgetSetting key={`widgetPos_${index + incrementNumber}`}
-                                                    id={`widgetPos_${index + incrementNumber}`}
-                                                    colStyle={getColStyle()}/>;
+                        id={`widgetPos_${index + incrementNumber}`}
+                        colStyle={getColStyle()} />;
                 }
             }
 
-                // E.g: current widgets = 5, layout = 3
-                // missing = 3 - ( 5 % 3 ) = 3 - 2 = 1 => fill in 1 widget
-                // => total widgets = 5 + 1 = 6
-
-                // E.g 2: current widgets = 6, layout = 3
-                // missing = 3 - ( 6 % 3 ) = 3 - 0 = 3 => fill in 3 widget
-                // => total widgets = 6 + 3 = 9
-
-                // E.g 3: current widgets = 5, layout = 2
-                // missing = 2 - ( 5 % 2 ) = 2 - 1 = 1 => fill in 1 widget
-                // => total widgets = 5 + 1 = 6 ratio 2 / 2 / 2
             let missingWidget = columnLayout - (currentWidgets.length % columnLayout);
 
             for (let index = 0; index < missingWidget; index += incrementNumber) {
-                currentWidgets.push(<WidgetSetting key={`widgetPos_${currentWidgets.length}`}
-                                            id={`widgetPos_${currentWidgets.length}`}
-                                            colStyle={getColStyle()}/>);
+                currentWidgets.push(<WidgetSetting key={`widgetPos_${currentWidgets.length + incrementNumber}`}
+                    id={`widgetPos_${currentWidgets.length + incrementNumber}`}
+                    colStyle={getColStyle()} />);
             }
 
             return currentWidgets;
@@ -81,22 +70,25 @@ export class Dashboard extends React.Component {
 
             switch (widget.widgetType) {
             case 'TEXT_WIDGET':
-                widgetArray[widget.position + positionOffset] = <TextWidget key={`widgetPos_${widget.position}`}
-                                                                    id={`widgetPos_${widget.position}`}
-                                                                    colStyle={getColStyle()}
-                                                                    userHeight={maxHeight} />;
+                widgetArray[widget.position + positionOffset] =
+                        <TextWidget key={`widgetPos_${widget.position}`}
+                            id={`widgetPos_${widget.position}`}
+                            colStyle={getColStyle()}
+                            userHeight={maxHeight} />;
                 break;
             case 'DATABASE_WIDGET':
-                widgetArray[widget.position + positionOffset] = <DatabaseWidget key={`widgetPos_${widget.position}`}
-                                                                    id={`widgetPos_${widget.position}`}
-                                                                    colStyle={getColStyle()}
-                                                                    userHeight={maxHeight} />;
+                widgetArray[widget.position + positionOffset] =
+                        <DatabaseWidget key={`widgetPos_${widget.position}`}
+                            id={`widgetPos_${widget.position}`}
+                            colStyle={getColStyle()}
+                            userHeight={maxHeight} />;
                 break;
             case 'TODOLIST_WIDGET':
-                widgetArray[widget.position + positionOffset] = <TodoListWidget key={`widgetPos_${widget.position}`}
-                                                                    id={`widgetPos_${widget.position}`}
-                                                                    colStyle={getColStyle()}
-                                                                    userHeight={maxHeight} />;
+                widgetArray[widget.position + positionOffset] =
+                        <TodoListWidget key={`widgetPos_${widget.position}`}
+                            id={`widgetPos_${widget.position}`}
+                            colStyle={getColStyle()}
+                            userHeight={maxHeight} />;
                 break;
             default:
                 break;

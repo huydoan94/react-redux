@@ -6,17 +6,18 @@ import style from './dashboard.style.scss';
 export const DashboardView = cssModules(({ title, layoutType, widgets, changeLayout }) => {
     const combineWidgetToBlock = (allWidgets, columnLayout) => {
         let blocks = [],
-            finalBlocks = [],
-            indexOffset = 1,
-            template = (blockWidgets, index) => {
-                return (
-                    <div key={`widgetBlockPos_${index}`}
-                        styleName='dashboard__components'
-                        className='col-md-12'>
-                        { blockWidgets.map((blockWidget) => blockWidget) }
-                    </div>
-                );
-            };
+            finalBlocks = [];
+
+        const indexOffset = 1;
+        const template = (blockWidgets, index) => {
+            return (
+                <div key={`widgetBlockPos_${index}`}
+                    styleName='dashboard__components'
+                    className='col-md-12'>
+                    {blockWidgets.map((blockWidget) => blockWidget)}
+                </div>
+            );
+        };
 
         allWidgets.forEach((widget, index) => {
             blocks.push(widget);
@@ -42,7 +43,7 @@ export const DashboardView = cssModules(({ title, layoutType, widgets, changeLay
                     </ButtonGroup>
                 </div>
             </div>
-            { combineWidgetToBlock(widgets, layoutType).map((block) => {
+            {combineWidgetToBlock(widgets, layoutType).map((block) => {
                 return block;
             })}
         </div>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { getAllTodo, addTodo, filterTodo, deleteCompletedTodo } from './todo-list.action';
-import { TodoListWidgetView } from './todo-list-widget.view';
+import { getAllTodo, addTodo, filterTodo, deleteCompletedTodo } from './todolist-widget.action';
+import { TodoListWidgetView } from './todolist-widget.view';
 
 let numberCompleted = 0;
 let isFilterCompleted = false;

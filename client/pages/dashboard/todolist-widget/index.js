@@ -1,3 +1,3 @@
-export * from './todo-list-widget.view';
-export * from './todo-list-widget.component';
-export * from './todo-list-widget.reducer';
+export * from './todolist-widget.view';
+export * from './todolist-widget.component';
+export * from './todolist-widget.reducer';

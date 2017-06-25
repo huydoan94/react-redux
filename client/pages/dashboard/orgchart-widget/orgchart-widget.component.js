@@ -1,6 +1,6 @@
 import React from 'react';
 import { DatabaseWidgetView } from './database-widget.view';
-import { getAll } from './database-widget.services';
+import { getAll } from './database-services';
 
 export class DatabaseWidget extends React.Component {
     constructor(props) {
