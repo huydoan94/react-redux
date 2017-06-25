@@ -11,14 +11,17 @@ import { WidgetBody } from '../components/widgetBody';
 import { ItemList } from '../components/itemList';
 
 export const TodoListWidgetView = cssModules((props) => {
-    const { widget,
+    const {
+        widget,
+        handleDeleteItem,
+        updateNumberActive,
         inputAddTodo,
         onEnter,
         showAllBtn,
         showActiveBtn,
         showCompletedBtn,
         clearCompletedBtn,
-        numberCompleted,
+        numberActive,
         tasks,
         colStyle,
         maxHeight
@@ -34,7 +37,7 @@ export const TodoListWidgetView = cssModules((props) => {
                     onEnter={onEnter}
                 />
                 <div styleName="widget-container__todo-list-option">
-                    <span styleName="padding-right-20">{numberCompleted}</span>
+                    <span styleName="padding-right-20">{`${numberActive} Item(s) left`}</span>
                     <Button buttonAttribute={showAllBtn.attribute} buttonEvent={showAllBtn.event}></Button>
                     <Button buttonAttribute={showActiveBtn.attribute} buttonEvent={showActiveBtn.event}></Button>
                     <Button buttonAttribute={showCompletedBtn.attribute} buttonEvent={showCompletedBtn.event}></Button>
@@ -43,7 +46,11 @@ export const TodoListWidgetView = cssModules((props) => {
                     </div>
                 </div>
                 <div style={{ overflow: 'auto' }}>
-                    <ItemList items={tasks} />
+                    <ItemList
+                        items={tasks}
+                        handleDeleteItem={handleDeleteItem}
+                        updateNumberActive={updateNumberActive}
+                    />
                 </div>
             </WidgetBody>
         </WidgetContainer>

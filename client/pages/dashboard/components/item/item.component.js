@@ -29,11 +29,7 @@ class Item extends Component {
     }
 
     handleDeleteButtonClick = () => {
-        const idItem = this.item.id;
-
-        if (idItem) {
-            this.dispatch(deleteTodo(idItem));
-        }
+        this.props.handleDeleteItem(this.item.id);
     }
 
     updateItem = () => {
@@ -45,6 +41,7 @@ class Item extends Component {
             isCompleted: this.item.isCompleted
         };
 
+        this.props.updateNumberActive(this.state.isCompleted);
         this.dispatch(updateTodo(this.item.id, condition));
     }
 

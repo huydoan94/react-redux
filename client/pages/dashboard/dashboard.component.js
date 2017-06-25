@@ -3,9 +3,11 @@ import { DashboardView } from './dashboard.view';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import jwtDecode from 'jwt-decode';
+import {remove} from 'lodash';
 
 
 import { fetchDashboard, changeLayout } from './dashboard.action';
+import { updateDashBoard } from './dashboard.service';
 
 import { TextWidget } from './text-widget';
 import { TodoListWidget } from './todolist-widget';
@@ -76,6 +78,7 @@ export class Dashboard extends React.Component {
                             colStyle={getColStyle()}
                             userHeight={maxHeight} />;
                 break;
+
             case 'DATABASE_WIDGET':
                 widgetArray[widget.position + positionOffset] =
                         <DatabaseWidget key={`widgetPos_${widget.position}`}
@@ -83,13 +86,19 @@ export class Dashboard extends React.Component {
                             colStyle={getColStyle()}
                             userHeight={maxHeight} />;
                 break;
+
             case 'TODOLIST_WIDGET':
                 widgetArray[widget.position + positionOffset] =
                         <TodoListWidget key={`widgetPos_${widget.position}`}
                             id={`widgetPos_${widget.position}`}
+                            position={widget.position}
                             colStyle={getColStyle()}
-                            userHeight={maxHeight} />;
+                            userHeight={maxHeight}
+                            widgetContent={widget.configs.todos}
+                            updateTodoItemInDashboard={this.updateTodoItemInDashboard}
+                        />;
                 break;
+
             default:
                 break;
             }
@@ -100,6 +109,32 @@ export class Dashboard extends React.Component {
 
     changeLayout = (event) => {
         this.props.dispatch(changeLayout(parseInt(event.target.value, 10), this.props.dashboard.id));
+    }
+
+    updateTodoItemInDashboard = (position, idTodo, action) => {
+        const
+            empty = -1,
+            dashboard = this.props.dashboard,
+            dashboardId = dashboard.id;
+        let widgets = dashboard.widgets;
+
+        const index = widgets.findIndex((e) => e.position === position);
+
+        if (index > empty) {
+            let
+                widget = widgets[index],
+                todos = widget.configs.todos;
+
+            if (action === 'add_todo') {
+                todos = [...todos, idTodo];
+            } else if (action === 'delete_todo') {
+                remove(todos, (e) => e === idTodo);
+            } else {
+                idTodo.forEach((id) => remove(todos, (e) => parseInt(e, 10) === parseInt(id, 10)));
+            }
+            widget.configs.todos = todos;
+            updateDashBoard(dashboardId, [widget]);
+        }
     }
 
     render() {

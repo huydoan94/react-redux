@@ -6,6 +6,10 @@ export const getAll = () => {
     return interactWithServer(URL, 'GET');
 };
 
+export const getOne = (id) => {
+    return interactWithServer(`${URL}/${id}`, 'GET');
+};
+
 export const add = (todo) => {
     return interactWithServer(URL, 'POST', todo);
 };

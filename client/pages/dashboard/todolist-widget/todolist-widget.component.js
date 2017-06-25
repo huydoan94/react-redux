@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { remove } from 'lodash';
 
-import { getAllTodo, addTodo, filterTodo, deleteCompletedTodo } from './todolist-widget.action';
+import { getAllTodo, addTodo, filterTodo, deleteTodo, deleteCompletedTodo } from './todolist-widget.action';
 import { TodoListWidgetView } from './todolist-widget.view';
 
-let numberCompleted = 0;
+const empty = -1;
 let isFilterCompleted = false;
 
 @connect(state => ({ todoList: state.todos }))
@@ -15,6 +16,14 @@ export class TodoListWidget extends React.Component {
     }
 
     inititialize = () => {
+        let { dispatch } = this.props;
+
+        this.dispatch = dispatch;
+        this.state = {
+            listId: this.props.widgetContent,
+            position: this.props.position
+        };
+
         this.widget = {
             title: 'Todo List Widget',
             mode: 'editMode'
@@ -32,7 +41,7 @@ export class TodoListWidget extends React.Component {
             event: {
                 onButtonClick: () => {
                     isFilterCompleted = false;
-                    this.dispatch(getAllTodo());
+                    this.dispatch(getAllTodo(this.state.listId, this.state.position));
                 }
             }
         };
@@ -82,20 +91,48 @@ export class TodoListWidget extends React.Component {
                 onButtonClick: () => {
                     let arrayId = this.getCompletedItem();
 
-                    this.dispatch(deleteCompletedTodo(arrayId));
+                    this.dispatch(deleteCompletedTodo(arrayId, this.state.tasksLocal, this.state.position));
+                    this.props.updateTodoItemInDashboard(this.state.position, arrayId, 'delete_multi_todo');
                 }
             }
         };
 
-        let { dispatch } = this.props;
-
-        this.dispatch = dispatch;
         this.dispatch(getAllTodo());
     }
 
     filterItem = (type, condition) => {
-        this.dispatch(filterTodo(type, condition));
+        this.dispatch(filterTodo(type, condition, this.state.listId, this.state.position));
     };
+
+    updateListId = (newTodo) => {
+        this.setState({
+            listId: [...this.state.listId, newTodo.id],
+            tasksLocal: [...this.state.tasksLocal, newTodo]
+        });
+        this.props.updateTodoItemInDashboard(this.state.position, newTodo.id, 'add_todo');
+    }
+
+    handleDeleteItem = (id) => {
+        this.dispatch(deleteTodo(id, this.state.tasksLocal, this.state.position));
+        this.props.updateTodoItemInDashboard(this.state.position, id, 'delete_todo');
+    }
+
+    deleteItemInDashBoard = (idDeleted) => {
+        this.props.updateTodoItemInDashboard(this.state.position, idDeleted, 'delete_todo');
+    }
+
+    updateNumberActive = (isCompleted) => {
+        let numberLefts = this.state.numberActive;
+
+        if (isCompleted) {
+            numberLefts++;
+        } else {
+            numberLefts--;
+        }
+        this.setState({
+            numberActive: numberLefts
+        });
+    }
 
     onEnter = (ref) => {
         const task = ref.value;
@@ -105,22 +142,23 @@ export class TodoListWidget extends React.Component {
             isCompleted: false
         };
 
-        this.dispatch(addTodo(taskObj));
+        ref.value = '';
+        this.dispatch(addTodo(taskObj, this.updateListId));
     }
 
-    getNumberActive = (tasks) => {
-        let count = 0;
-        let result = '';
+    // getNumberActive = (tasks) => {
+    //     let count = 0;
+    //     let result = '';
 
-        count = (tasks.filter((task) => !task.isCompleted)).length;
+    //     count = (tasks.filter((task) => !task.isCompleted)).length;
 
-        result = `${count} Item(s) left`;
+    //     result = `${count} Item(s) left`;
 
-        return result;
-    }
+    //     return result;
+    // }
 
     getCompletedItem = () => {
-        const tasks = this.props.todoList;
+        const tasks = this.state.tasksLocal;
         let result = [];
 
         tasks.forEach((task) => {
@@ -132,25 +170,57 @@ export class TodoListWidget extends React.Component {
         return result;
     }
 
-    render() {
-        const tasks = this.props.todoList;
+    getTaskLocal = (allTasks) => {
+        const listId = this.state.listId;
+        let tasks = [];
 
-        if (!isFilterCompleted) {
-            numberCompleted = this.getNumberActive(tasks);
+        allTasks.forEach((task) => {
+            const index = listId.findIndex((e) => e === parseInt(task.id, 10));
+
+            if (index > empty) {
+                tasks = [...tasks, task];
+            }
+        });
+
+        this.setState({
+            numberActive: tasks.filter((task) => !task.isCompleted).length
+        });
+
+        return tasks;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.state.tasksLocal) {
+            this.setState({
+                tasksLocal: this.getTaskLocal(nextProps.todoList)
+            });
+        } else if (nextProps.todoList.widget && nextProps.todoList.widget === this.state.position) {
+            this.setState({
+                tasksLocal: nextProps.todoList.data
+            });
+        }
+    }
+
+    render() {
+        while (!this.state.tasksLocal) {
+            return (null);
         }
 
         return <TodoListWidgetView
             widget={this.widget}
+            handleDeleteItem={this.handleDeleteItem}
+            updateNumberActive={this.updateNumberActive}
             inputAddTodo={this.inputAddTodo}
             onEnter={this.onEnter}
             showAllBtn={this.showAllBtn}
             showActiveBtn={this.showActiveBtn}
             showCompletedBtn={this.showCompletedBtn}
             clearCompletedBtn={this.clearCompletedBtn}
-            numberCompleted={numberCompleted}
-            tasks={tasks}
+            numberActive={this.state.numberActive}
+            tasks={this.state.tasksLocal}
             colStyle={this.props.colStyle}
             maxHeight={this.props.userHeight}
+            position={`widget_${this.state.position}`}
         />;
     }
 }
