@@ -2,8 +2,8 @@ import React from 'react';
 import cssModules from 'react-css-modules';
 import style from './widget-header.style.scss';
 
-export const WidgetHeaderView = cssModules(({ widget }) => {
-    const {title, mode} = widget;
+export const WidgetHeader = cssModules(({ widget }) => {
+    const { title, mode, buttonEventCatcher } = widget;
 
     return (
         <div styleName='widget-header-wrapper'>
@@ -11,19 +11,22 @@ export const WidgetHeaderView = cssModules(({ widget }) => {
                 {title}
             </div>
             <div styleName='widget-header-wrapper__option'>
-                { mode === 'viewMode' ? (
+                { mode === 'viewMode' && (
                     <span className='glyphicon glyphicon-fullscreen'></span>
-                ) : mode === 'settingMode' ? (
-                    <span className='glyphicon glyphicon-remove'></span>
-                ) : (
-                        <div>
-                            <span className='glyphicon glyphicon-cog' />
-                            <span styleName='widget-header-wrapper__option__center'
-                                  className='glyphicon glyphicon-fullscreen' />
-                            <span className='glyphicon glyphicon-remove' />
-                        </div>
-                    )
-                }
+                )}
+                { mode !== 'viewMode' && mode !== 'settingMode' && (
+                    <div>
+                        <button className='glyphicon glyphicon-cog' styleName='button-style'
+                            value='setting'
+                            onClick={buttonEventCatcher} />
+                        <button className='glyphicon glyphicon-fullscreen' styleName='button-style'
+                            value='fullscreen'
+                            onClick={buttonEventCatcher} />
+                        <button className='glyphicon glyphicon-remove' styleName='button-style'
+                            value='remove'
+                            onClick={buttonEventCatcher} />
+                    </div>
+                )}
             </div>
         </div>
     );

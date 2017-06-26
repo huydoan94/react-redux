@@ -1,9 +1,11 @@
-import { getByUserId, updateLayout } from './dashboard.service';
+import { getByUserId, updateLayout, updateDashboardWidgets } from './dashboard.service';
 
 const DashboardAction = {
     DASHBOARD_CREATION: 'DASHBOARD_CREATION',
     DASHBOARD_FETCH: 'DASHBOARD_FETCH',
-    DASHBOARD_CHANGE_LAYOUT: 'DASHBOARD_CHANGE_LAYOUT'
+    DASHBOARD_CHANGE_LAYOUT: 'DASHBOARD_CHANGE_LAYOUT',
+    DASHBOARD_REMOVE_WIDGET: 'DASHBOARD_REMOVE_WIDGET',
+    DASHBOARD_ADD_WIDGET: 'DASHBOARD_ADD_WIDGET'
 };
 
 const objectifier = (type, dashboardsData) => {
@@ -27,5 +29,17 @@ export const fetchDashboard = (userId) => (dispatch) => {
 export const changeLayout = (layoutColumn, dashboardId) => (dispatch) => {
     return updateLayout(layoutColumn, dashboardId).then((result) => {
         dispatch(objectifier(DashboardAction.DASHBOARD_CHANGE_LAYOUT, result.layoutColumn));
+    });
+};
+
+export const removeWidget = (editedWidget, dashboardId) => (dispatch) => {
+    return updateDashboardWidgets(editedWidget, dashboardId).then((result) => {
+        dispatch(objectifier(DashboardAction.DASHBOARD_REMOVE_WIDGET, result.widgets));
+    });
+};
+
+export const addWidget = (editedWidget, dashboardId) => (dispatch) => {
+    return updateDashboardWidgets(editedWidget, dashboardId).then((result) => {
+        dispatch(objectifier(DashboardAction.DASHBOARD_ADD_WIDGET, result.widgets));
     });
 };

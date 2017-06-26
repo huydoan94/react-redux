@@ -43,9 +43,7 @@ export const DashboardView = cssModules(({ title, layoutType, widgets, changeLay
                     </ButtonGroup>
                 </div>
             </div>
-            {combineWidgetToBlock(widgets, layoutType).map((block) => {
-                return block;
-            })}
+            {combineWidgetToBlock(widgets, layoutType).map((block) => block)}
         </div>
     );
 }, style);

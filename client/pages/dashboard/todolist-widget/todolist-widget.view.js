@@ -24,14 +24,15 @@ export const TodoListWidgetView = cssModules((props) => {
         numberActive,
         tasks,
         colStyle,
-        maxHeight
+        minHeight,
+        panelEvent
         } = props;
 
     inputAddTodo.inputClass = 'add-new-item-input';
 
     return (
-        <WidgetContainer colStyle={colStyle} maxHeight={maxHeight}>
-            <WidgetHeader widget={widget} />
+        <WidgetContainer colStyle={colStyle} minHeight={minHeight}>
+            <WidgetHeader widget={{widget, buttonEventCatcher: panelEvent}} />
             <WidgetBody>
                 <Input inputAtrribute={inputAddTodo}
                     onEnter={onEnter}

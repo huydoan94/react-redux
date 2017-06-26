@@ -1,1 +1,1 @@
-export * from './widget-body.component';
+export * from './widget-body.view';

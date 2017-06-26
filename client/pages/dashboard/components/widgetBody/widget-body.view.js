@@ -8,4 +8,4 @@ export const WidgetBody = cssModules((props) => {
             {props.children}
         </div>
     );
-}, style, {errorWhenNotFound: false});
+}, style);

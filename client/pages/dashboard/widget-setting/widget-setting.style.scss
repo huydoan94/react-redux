@@ -13,3 +13,38 @@
 @include bem-b('plus-icon:hover') {
     cursor: pointer;
 }
+
+@include bem-b('setting') {
+    padding: 10px 15px;
+
+    @include bem-e('header') {
+        display: block;
+        width: 100%;
+        border-bottom: 2px solid #245380;
+        margin-bottom: 15px;
+
+        @include bem-e('inputgroup') {
+            display: inline-block;
+            width: 100%;
+            padding: 0 !important;
+
+            @include bem-e('left') {
+                width: 50%;
+                display: inline-block;
+                padding: 0 2px;
+            }
+
+            @include bem-e('middle') {
+                width: 25%;
+                display: inline-block;
+                padding: 0 2px;
+            }
+
+            @include bem-e('right') {
+                width: 25%;
+                display: inline-block;
+                padding: 0 2px;
+            }
+        }
+    }
+}

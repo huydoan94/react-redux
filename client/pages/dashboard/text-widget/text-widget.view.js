@@ -7,13 +7,19 @@ import { WidgetContainer } from '../components/widgetContainer';
 import { WidgetHeader } from '../components/widgetHeader';
 import { WidgetBody } from '../components/widgetBody';
 
-export const TextWidgetView = cssModules(({ widget, colStyle, maxHeight }) => {
+export const TextWidgetView = cssModules((props) => {
+    const { WidgetConfigs, WidgetStyles } = props;
+
     return (
-        <WidgetContainer colStyle={colStyle} maxHeight={maxHeight}>
-            <WidgetHeader widget={widget} />
+        <WidgetContainer colStyle={WidgetStyles.colStyle} minHeight={WidgetStyles.minHeight}>
+            <WidgetHeader widget={{
+                title: WidgetConfigs.title,
+                mode: WidgetConfigs.mode,
+                buttonEventCatcher: WidgetConfigs.panelEvent
+            }} />
             <WidgetBody>
                 <div styleName='widget-container__text'>
-                    {widget.configs.text}
+                    {WidgetConfigs.configs.text}
                 </div>
             </WidgetBody>
         </WidgetContainer>

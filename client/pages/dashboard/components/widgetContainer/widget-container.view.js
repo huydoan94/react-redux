@@ -4,10 +4,10 @@ import style from './widget-container.style.scss';
 
 export const WidgetContainer = cssModules((props) => {
     return (
-        <div className={props.colStyle} style={{padding: '0 2px'}}>
+        <div className={props.colStyle} style={{ padding: '0 2px' }}>
             <div className='panel panel-primary'
-                 styleName='widget-container'
-                 style={{minHeight: props.maxHeight}}>
+                styleName='widget-container'
+                style={{ minHeight: props.minHeight }}>
                 {props.children}
             </div>
         </div>

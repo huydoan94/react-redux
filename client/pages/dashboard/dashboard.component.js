@@ -3,10 +3,10 @@ import { DashboardView } from './dashboard.view';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import jwtDecode from 'jwt-decode';
-import {remove} from 'lodash';
+import { remove } from 'lodash';
 
 
-import { fetchDashboard, changeLayout } from './dashboard.action';
+import { fetchDashboard, changeLayout, removeWidget } from './dashboard.action';
 import { updateDashBoard } from './dashboard.service';
 
 import { TextWidget } from './text-widget';
@@ -19,6 +19,7 @@ export class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
+
         if (!sessionStorage.getItem('jwtToken')) {
             browserHistory.push('/login');
         }
@@ -26,7 +27,7 @@ export class Dashboard extends React.Component {
         props.dispatch(fetchDashboard(jwtDecode(sessionStorage.getItem('jwtToken')).id));
     }
 
-    fillWithEmptyWidget = (widgets) => {
+    fillDashboard = (widgets) => {
         let widgetArray = [];
         const positionOffset = -1,
             incrementNumber = 1,
@@ -47,28 +48,37 @@ export class Dashboard extends React.Component {
             }
         };
 
-        const fillDashboard = (currentWidgets, columnLayout) => {
+        const fillWithEmptyWidget = (currentWidgets, columnLayout) => {
             for (let index = 0; index < currentWidgets.length; index += incrementNumber) {
                 if (typeof currentWidgets[index] === 'undefined') {
-                    currentWidgets[index] = <WidgetSetting key={`widgetPos_${index + incrementNumber}`}
+                    currentWidgets[index] =
+                    <WidgetSetting
+                        key={`widgetPos_${index + incrementNumber}`}
                         id={`widgetPos_${index + incrementNumber}`}
-                        colStyle={getColStyle()} />;
+                        addWidget={this.addWidget}
+                        colStyle={getColStyle()}
+                    />;
                 }
             }
 
             let missingWidget = columnLayout - (currentWidgets.length % columnLayout);
 
             for (let index = 0; index < missingWidget; index += incrementNumber) {
-                currentWidgets.push(<WidgetSetting key={`widgetPos_${currentWidgets.length + incrementNumber}`}
-                    id={`widgetPos_${currentWidgets.length + incrementNumber}`}
-                    colStyle={getColStyle()} />);
+                currentWidgets.push(
+                    <WidgetSetting
+                        key={`widgetPos_${currentWidgets.length + incrementNumber}`}
+                        id={`widgetPos_${currentWidgets.length + incrementNumber}`}
+                        addWidget={this.addWidget}
+                        colStyle={getColStyle()}
+                    />
+                );
             }
 
             return currentWidgets;
         };
 
         widgets.forEach((widget) => {
-            const { maxWidth, maxHeight } = widget;
+            const minHeight = widget.maxHeight; // Because of database mismatch !!!
 
             switch (widget.widgetType) {
             case 'TEXT_WIDGET':
@@ -76,7 +86,9 @@ export class Dashboard extends React.Component {
                         <TextWidget key={`widgetPos_${widget.position}`}
                             id={`widgetPos_${widget.position}`}
                             colStyle={getColStyle()}
-                            userHeight={maxHeight} />;
+                            userHeight={minHeight}
+                            deleteWidget={this.deleteWidget}
+                        />;
                 break;
 
             case 'DATABASE_WIDGET':
@@ -84,7 +96,9 @@ export class Dashboard extends React.Component {
                         <DatabaseWidget key={`widgetPos_${widget.position}`}
                             id={`widgetPos_${widget.position}`}
                             colStyle={getColStyle()}
-                            userHeight={maxHeight} />;
+                            userHeight={minHeight}
+                            deleteWidget={this.deleteWidget}
+                        />;
                 break;
 
             case 'TODOLIST_WIDGET':
@@ -93,7 +107,8 @@ export class Dashboard extends React.Component {
                             id={`widgetPos_${widget.position}`}
                             position={widget.position}
                             colStyle={getColStyle()}
-                            userHeight={maxHeight}
+                            userHeight={minHeight}
+                            deleteWidget={this.deleteWidget}
                             widgetContent={widget.configs.todos}
                             updateTodoItemInDashboard={this.updateTodoItemInDashboard}
                         />;
@@ -104,11 +119,31 @@ export class Dashboard extends React.Component {
             }
         });
 
-        return fillDashboard(widgetArray, this.props.dashboard.layoutColumn);
+        return fillWithEmptyWidget(widgetArray, this.props.dashboard.layoutColumn);
     }
 
     changeLayout = (event) => {
         this.props.dispatch(changeLayout(parseInt(event.target.value, 10), this.props.dashboard.id));
+    }
+
+    deleteWidget = (widgetPosition) => {
+        let allWidgets = this.props.dashboard.widgets;
+        let results = allWidgets.filter((widget) => {
+            return widget.position !== widgetPosition;
+        });
+
+        this.props.dispatch(removeWidget(results, this.props.dashboard.id));
+    }
+
+    addWidget = (widgetPosition, settingData) => {
+        console.log(widgetPosition);
+        console.log(settingData);
+        // let allWidgets = this.props.dashboard.widgets;
+        // let results = allWidgets.filter((widget) => {
+        //     return widget.position !== widgetPosition;
+        // });
+
+        // this.props.dispatch(removeWidget(results, this.props.dashboard.id));
     }
 
     updateTodoItemInDashboard = (position, idTodo, action) => {
@@ -142,7 +177,7 @@ export class Dashboard extends React.Component {
 
         return <DashboardView title={title}
             layoutType={layoutColumn}
-            widgets={this.fillWithEmptyWidget(widgets)}
+            widgets={this.fillDashboard(widgets)}
             changeLayout={this.changeLayout} />;
     }
 }

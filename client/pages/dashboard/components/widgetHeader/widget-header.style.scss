@@ -17,9 +17,12 @@
         display: inline-block;
         float: right;
         color: #fff;
-
-         @include bem-e('center') {
-             margin: 0 10px;
-         }
     }
+}
+
+@include bem-b('button-style') {
+    background: none !important;
+    color: inherit;
+    border: none; 
+    cursor: pointer;
 }

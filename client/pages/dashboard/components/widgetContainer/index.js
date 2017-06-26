@@ -1,1 +1,1 @@
-export * from './widget-container.component';
+export * from './widget-container.view';

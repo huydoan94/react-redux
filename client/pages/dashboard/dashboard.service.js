@@ -14,6 +14,10 @@ export const updateLayout = (layoutColumn, dashboardId) => {
     return interactWithServer(`${URL}/${dashboardId}`, 'PUT', { layoutColumn });
 };
 
+export const updateDashboardWidgets = (widgets, dashboardId) => {
+    return interactWithServer(`${URL}/${dashboardId}`, 'PUT', { widgets });
+};
+
 export const updateDashBoard = (dashboardId, widgets) => {
     return interactWithServer(`${URL}/edit/widget`, 'PUT', { dashboardId, widgets});
 };

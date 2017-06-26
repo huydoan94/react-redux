@@ -11,44 +11,63 @@ export class WidgetSetting extends React.Component {
 
     init = () => {
         this.state = {
+            title: 'Widget Setting',
+            mode: 'settingMode',
             subViewSetting: <TextSettingView />,
             isRevealed: false
         };
+    }
 
-        this.WidgetType = {
-            title: 'Widget Setting',
-            mode: 'settingMode'
-        };
+    EditWidgetValues = {
+        placeholder: 'New Widget',
+        label: 'Widget title: '
+    };
 
-        this.EditWidgetValues = {
-            placeholder: 'New Widget',
-            label: 'Widget title: '
-        };
-
-        this.WidgetSelector = {
-            label: 'Widget Type:',
-            options: [
-                {
-                    id: 0,
-                    type: 'Text'
-                },
-                {
-                    id: 1,
-                    type: 'Database'
-                },
-                {
-                    id: 2,
-                    type: 'Org Chart'
-                }
-            ],
-            events: {
-                onSelectorChange: (event) => {
-                    const subViewSetting = this.setSubViewSetting(event.target.value);
-
-                    this.setState({ subViewSetting });
-                }
+    WidgetSelector = {
+        label: 'Widget Type:',
+        options: [
+            {
+                id: 0,
+                type: 'Text'
+            },
+            {
+                id: 1,
+                type: 'Database'
+            },
+            {
+                id: 2,
+                type: 'Org Chart'
             }
-        };
+        ],
+        events: {
+            onSelectorChange: (event) => {
+                const subViewSetting = this.setSubViewSetting(event.target.value);
+
+                this.setState({ subViewSetting });
+            }
+        }
+    }
+
+    SaveButton = {
+        label: 'Save',
+        events: {
+            onSave: (event) => {
+                this.props.addWidget(this.props.id);
+            }
+        }
+    }
+
+    CancelButton = {
+        label: 'Cancel',
+        events: {
+            onCancel: (event) => {
+                // this.props.addWidget(this.props.id);
+            }
+        }
+    }
+
+    propsChanged = (data) => {
+        console.log(data);
     }
 
     setSubViewSetting = (viewSetting) => {
@@ -56,7 +75,7 @@ export class WidgetSetting extends React.Component {
         case 'Text':
             return <TextSettingView />;
         case 'Database':
-            return <DatabaseSettingView />;
+            return <DatabaseSettingView propsChanged={this.propsChanged}/>;
         case 'Org Chart':
             return <OrgChartSettingView />;
         default:
@@ -64,20 +83,22 @@ export class WidgetSetting extends React.Component {
         }
     }
 
-    revealSettings = (event) => {
-        this.setState({ isRevealed: true });
+    RevealSettings = (event) => {
+        if (event.target) {
+            this.setState({ isRevealed: true });
+        }
     }
 
     render() {
         return (
             <WidgetSettingView
-                WidgetType={this.WidgetType}
+                WidgetConfigs={this.state}
+                WidgetStyles={{colStyle: this.props.colStyle}}
                 EditWidgetValues={this.EditWidgetValues}
                 WidgetSelector={this.WidgetSelector}
-                subViewSetting={this.state.subViewSetting}
-                isRevealed={this.state.isRevealed}
-                colStyle={this.props.colStyle}
-                revealSettings={this.revealSettings}
+                SaveButton={this.SaveButton}
+                CancelButton={this.CancelButton}
+                RevealSettings={this.RevealSettings}
             />
         );
     }

@@ -1,7 +1,9 @@
 import React from 'react';
 import { DatabaseWidgetView } from './database-widget.view';
 import { getAll } from './database-widget.services';
+import { connect } from 'react-redux';
 
+@connect(state => ({ databaseWidget: state.databaseWidget }))
 export class DatabaseWidget extends React.Component {
     constructor(props) {
         super(props);
@@ -10,15 +12,27 @@ export class DatabaseWidget extends React.Component {
     }
 
     init = () => {
-        this.WidgetType = {
-            title: 'Database Widget',
-            mode: 'editMode'
-        };
-
         this.state = {
+            title: 'Database Widget',
+            mode: 'editMode',
             DatabaseTable: {
                 headers: ["id", "None", "None"],
                 values: []
+            },
+            panelEvent: (event) => {
+                let thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10);
+
+                switch (event.target.value) {
+                case 'fullscreen':
+                    break;
+                case 'setting':
+                    break;
+                case 'remove':
+                    this.props.deleteWidget(thisWidgetPosition);
+                    break;
+                default:
+                    break;
+                }
             }
         };
 
@@ -36,10 +50,8 @@ export class DatabaseWidget extends React.Component {
 
     render() {
         return <DatabaseWidgetView
-            WidgetType={this.WidgetType}
-            DatabaseTable={this.state.DatabaseTable}
-            colStyle={this.props.colStyle}
-            maxHeight={this.props.userHeight}
+            WidgetConfigs={this.state}
+            WidgetStyles={{colStyle: this.props.colStyle, minHeight: this.props.userHeight}}
         />;
     }
 }

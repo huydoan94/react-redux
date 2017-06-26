@@ -5,8 +5,10 @@ import { WidgetContainer } from '../components/widgetContainer';
 import { WidgetHeader } from '../components/widgetHeader';
 import { WidgetBody } from '../components/widgetBody';
 
-export const DatabaseWidgetView = ({ WidgetType, DatabaseTable, colStyle, maxHeight }) => {
-    const { headers, values } = DatabaseTable;
+export const DatabaseWidgetView = (props) => {
+    const { WidgetConfigs } = props,
+        { DatabaseTable } = props.WidgetConfigs,
+        { colStyle, minHeight } = props.WidgetStyles;
 
     const getCaret = (direction) => {
         switch (direction) {
@@ -29,25 +31,29 @@ export const DatabaseWidgetView = ({ WidgetType, DatabaseTable, colStyle, maxHei
         alwaysShowAllBtns: true,
         paginationPosition: 'top',
         onPageChange: (page, sizePerPage) => {
-            console.log(page + ' + ' + sizePerPage);
+            console.log(`${page  } + ${  sizePerPage}`);
             // TODO: Missing showing current contact block
         }
     };
 
     return (
-        <WidgetContainer colStyle={colStyle} maxHeight={maxHeight}>
-            <WidgetHeader widget={WidgetType} className='row col-md-12' />
-            <WidgetBody className='row col-md-12'>
+        <WidgetContainer colStyle={colStyle} minHeight={minHeight}>
+            <WidgetHeader widget={{
+                title: WidgetConfigs.title,
+                mode: WidgetConfigs.mode,
+                buttonEventCatcher: WidgetConfigs.panelEvent
+            }} />
+            <WidgetBody>
                 <div style={{ overflow: 'auto' }}>
                     <BootstrapTable
-                        data={values}
+                        data={DatabaseTable.values}
                         bordered={false}
                         striped
                         hover
                         condensed
                         pagination
                         options={tableOptions}>
-                        {headers.map((header) => {
+                        {DatabaseTable.headers.map((header) => {
                             return (
                                 <TableHeaderColumn
                                     dataField={header}
@@ -55,7 +61,7 @@ export const DatabaseWidgetView = ({ WidgetType, DatabaseTable, colStyle, maxHei
                                     caretRender={getCaret}
                                     isKey={header === 'id'}
                                     key={header}
-                                    width='100%'>
+                                >
                                     {header}
                                 </TableHeaderColumn>
                             );

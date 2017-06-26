@@ -21,7 +21,22 @@ export class TodoListWidget extends React.Component {
         this.dispatch = dispatch;
         this.state = {
             listId: this.props.widgetContent,
-            position: this.props.position
+            position: this.props.position,
+            panelEvent: (event) => {
+                let thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10);
+
+                switch (event.target.value) {
+                case 'fullscreen':
+                    break;
+                case 'setting':
+                    break;
+                case 'remove':
+                    this.props.deleteWidget(thisWidgetPosition);
+                    break;
+                default:
+                    break;
+                }
+            }
         };
 
         this.widget = {
@@ -219,8 +234,9 @@ export class TodoListWidget extends React.Component {
             numberActive={this.state.numberActive}
             tasks={this.state.tasksLocal}
             colStyle={this.props.colStyle}
-            maxHeight={this.props.userHeight}
+            minHeight={this.props.userHeight}
             position={`widget_${this.state.position}`}
+            panelEvent={this.state.panelEvent}
         />;
     }
 }
