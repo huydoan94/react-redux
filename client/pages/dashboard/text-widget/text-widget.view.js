@@ -14,7 +14,7 @@ export const TextWidgetView = cssModules((props) => {
         <WidgetContainer colStyle={WidgetStyles.colStyle} minHeight={WidgetStyles.minHeight}>
             <WidgetHeader widget={{
                 title: WidgetConfigs.title,
-                mode: WidgetConfigs.mode,
+                widgetMode: WidgetConfigs.widgetMode,
                 buttonEventCatcher: WidgetConfigs.panelEvent
             }} />
             <WidgetBody>

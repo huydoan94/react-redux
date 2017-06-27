@@ -14,30 +14,34 @@ export const WidgetSettingView = cssModules((props) => {
     const {
         WidgetConfigs,
         WidgetStyles,
-        EditWidgetValues,
         WidgetSelector,
+        WidgetNameInput,
+        WidgetHeightInput,
+        WidgetWidthInput,
         SaveButton,
         CancelButton,
-        RevealSettings
+        RevealSettings,
+        widgetMode
     } = props;
 
     return (
-        <WidgetContainer colStyle={WidgetStyles.colStyle}>
+        <WidgetContainer colStyle={WidgetStyles.colStyle}
+            widgetMode={widgetMode}>
             <WidgetHeader widget={{ title: WidgetConfigs.title, mode: WidgetConfigs.mode }} />
             <WidgetBody>
                 {WidgetConfigs.isRevealed ? (
                     <div styleName='setting'>
                         <div styleName='setting__header'>
-                            <Input inputAtrribute={EditWidgetValues} />
+                            <Input inputAtrribute={WidgetNameInput} inputValue={WidgetNameInput.event} />
                             <div styleName='setting__header__inputgroup'>
                                 <div styleName='setting__header__inputgroup__left'>
                                     <Select WidgetSelector={WidgetSelector} />
                                 </div>
                                 <div styleName='setting__header__inputgroup__middle'>
-                                    <Input inputAtrribute={{label: 'Min Width: '}} />
+                                    <Input inputAtrribute={WidgetWidthInput} inputValue={WidgetWidthInput.event} />
                                 </div>
                                 <div styleName='setting__header__inputgroup__right'>
-                                    <Input inputAtrribute={{label: 'Min Height: '}} />
+                                    <Input inputAtrribute={WidgetHeightInput} inputValue={WidgetHeightInput.event} />
                                 </div>
                             </div>
                         </div>

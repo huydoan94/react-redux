@@ -40,7 +40,7 @@ export const DatabaseWidgetView = (props) => {
         <WidgetContainer colStyle={colStyle} minHeight={minHeight}>
             <WidgetHeader widget={{
                 title: WidgetConfigs.title,
-                mode: WidgetConfigs.mode,
+                widgetMode: WidgetConfigs.widgetMode,
                 buttonEventCatcher: WidgetConfigs.panelEvent
             }} />
             <WidgetBody>

@@ -3,7 +3,7 @@ import cssModules from 'react-css-modules';
 import style from './widget-header.style.scss';
 
 export const WidgetHeader = cssModules(({ widget }) => {
-    const { title, mode, buttonEventCatcher } = widget;
+    const { title, widgetMode, buttonEventCatcher } = widget;
 
     return (
         <div styleName='widget-header-wrapper'>
@@ -11,10 +11,12 @@ export const WidgetHeader = cssModules(({ widget }) => {
                 {title}
             </div>
             <div styleName='widget-header-wrapper__option'>
-                { mode === 'viewMode' && (
-                    <span className='glyphicon glyphicon-fullscreen'></span>
+                { widgetMode === 'viewMode' && (
+                    <button className='glyphicon glyphicon-fullscreen' styleName='button-style'
+                            value='fullscreen'
+                            onClick={buttonEventCatcher} />
                 )}
-                { mode !== 'viewMode' && mode !== 'settingMode' && (
+                { widgetMode === 'settingMode' && (
                     <div>
                         <button className='glyphicon glyphicon-cog' styleName='button-style'
                             value='setting'

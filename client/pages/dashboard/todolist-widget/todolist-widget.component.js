@@ -12,36 +12,54 @@ let isFilterCompleted = false;
 export class TodoListWidget extends React.Component {
     constructor(props) {
         super(props);
-        this.inititialize();
+        this.init();
     }
 
-    inititialize = () => {
-        let { dispatch } = this.props;
-
-        this.dispatch = dispatch;
+    init = () => {
         this.state = {
+            title: this.props.widgetTitle,
+            widgetMode: this.props.widgetMode,
             listId: this.props.widgetContent,
-            position: this.props.position,
+            position: parseInt((this.props.id).substring('widgetPos_'.length), 10),
+            isMaximized: false,
             panelEvent: (event) => {
-                let thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10);
-
-                switch (event.target.value) {
-                case 'fullscreen':
-                    break;
-                case 'setting':
-                    break;
-                case 'remove':
-                    this.props.deleteWidget(thisWidgetPosition);
-                    break;
-                default:
-                    break;
-                }
+                this.triggerPanelEvent(event.target.value);
+            },
+            styles: {
+                colStyle: this.props.colStyle,
+                minHeight: this.props.userHeight
             }
         };
 
-        this.widget = {
-            title: 'Todo List Widget',
-            mode: 'editMode'
+        this.triggerPanelEvent = (eventType) => {
+            let thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10);
+
+            switch (eventType) {
+            case 'fullscreen':
+                this.setState({
+                    isMaximized: !this.state.isMaximized,
+                    styles: {
+                        colStyle: !this.state.isMaximized ?
+                        {
+                            position: 'fixed',
+                            left: '0',
+                            top: '50px',
+                            right: '0',
+                            bottom: '-20px',
+                            zIndex: '1000'
+                        } : this.props.colStyle,
+                        minHeight: this.props.userHeight
+                    }
+                });
+                break;
+            case 'setting':
+                break;
+            case 'remove':
+                this.props.deleteWidget(thisWidgetPosition);
+                break;
+            default:
+                break;
+            }
         };
 
         this.inputAddTodo = {
@@ -56,7 +74,7 @@ export class TodoListWidget extends React.Component {
             event: {
                 onButtonClick: () => {
                     isFilterCompleted = false;
-                    this.dispatch(getAllTodo(this.state.listId, this.state.position));
+                    this.props.dispatch(getAllTodo(this.state.listId, this.state.position));
                 }
             }
         };
@@ -106,17 +124,17 @@ export class TodoListWidget extends React.Component {
                 onButtonClick: () => {
                     let arrayId = this.getCompletedItem();
 
-                    this.dispatch(deleteCompletedTodo(arrayId, this.state.tasksLocal, this.state.position));
+                    this.props.dispatch(deleteCompletedTodo(arrayId, this.state.tasksLocal, this.state.position));
                     this.props.updateTodoItemInDashboard(this.state.position, arrayId, 'delete_multi_todo');
                 }
             }
         };
 
-        this.dispatch(getAllTodo());
+        this.props.dispatch(getAllTodo());
     }
 
     filterItem = (type, condition) => {
-        this.dispatch(filterTodo(type, condition, this.state.listId, this.state.position));
+        this.props.dispatch(filterTodo(type, condition, this.state.listId, this.state.position));
     };
 
     updateListId = (newTodo) => {
@@ -128,7 +146,7 @@ export class TodoListWidget extends React.Component {
     }
 
     handleDeleteItem = (id) => {
-        this.dispatch(deleteTodo(id, this.state.tasksLocal, this.state.position));
+        this.props.dispatch(deleteTodo(id, this.state.tasksLocal, this.state.position));
         this.props.updateTodoItemInDashboard(this.state.position, id, 'delete_todo');
     }
 
@@ -158,7 +176,7 @@ export class TodoListWidget extends React.Component {
         };
 
         ref.value = '';
-        this.dispatch(addTodo(taskObj, this.updateListId));
+        this.props.dispatch(addTodo(taskObj, this.updateListId));
     }
 
     // getNumberActive = (tasks) => {
@@ -214,6 +232,15 @@ export class TodoListWidget extends React.Component {
                 tasksLocal: nextProps.todoList.data
             });
         }
+
+        this.setState({
+            styles: {
+                colStyle: nextProps.colStyle,
+                minHeight: nextProps.userHeight
+            },
+            title: nextProps.widgetTitle,
+            widgetMode: nextProps.widgetMode
+        });
     }
 
     render() {
@@ -222,7 +249,7 @@ export class TodoListWidget extends React.Component {
         }
 
         return <TodoListWidgetView
-            widget={this.widget}
+            widget={{ title: this.state.title, widgetMode: this.state.widgetMode }}
             handleDeleteItem={this.handleDeleteItem}
             updateNumberActive={this.updateNumberActive}
             inputAddTodo={this.inputAddTodo}
@@ -233,8 +260,8 @@ export class TodoListWidget extends React.Component {
             clearCompletedBtn={this.clearCompletedBtn}
             numberActive={this.state.numberActive}
             tasks={this.state.tasksLocal}
-            colStyle={this.props.colStyle}
-            minHeight={this.props.userHeight}
+            colStyle={this.state.styles.colStyle}
+            minHeight={this.state.styles.minHeight}
             position={`widget_${this.state.position}`}
             panelEvent={this.state.panelEvent}
         />;

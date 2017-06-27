@@ -32,7 +32,11 @@ export const TodoListWidgetView = cssModules((props) => {
 
     return (
         <WidgetContainer colStyle={colStyle} minHeight={minHeight}>
-            <WidgetHeader widget={{widget, buttonEventCatcher: panelEvent}} />
+            <WidgetHeader widget={{
+                title: widget.title,
+                widgetMode: widget.widgetMode,
+                buttonEventCatcher: panelEvent
+            }} />
             <WidgetBody>
                 <Input inputAtrribute={inputAddTodo}
                     onEnter={onEnter}

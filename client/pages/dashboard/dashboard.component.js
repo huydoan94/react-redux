@@ -6,7 +6,7 @@ import jwtDecode from 'jwt-decode';
 import { remove } from 'lodash';
 
 
-import { fetchDashboard, changeLayout, removeWidget } from './dashboard.action';
+import { fetchDashboard, changeLayout, removeWidget, addWidget } from './dashboard.action';
 import { updateDashBoard } from './dashboard.service';
 
 import { TextWidget } from './text-widget';
@@ -27,7 +27,7 @@ export class Dashboard extends React.Component {
         props.dispatch(fetchDashboard(jwtDecode(sessionStorage.getItem('jwtToken')).id));
     }
 
-    fillDashboard = (widgets) => {
+    fillDashboard = (widgets, widgetMode) => {
         let widgetArray = [];
         const positionOffset = -1,
             incrementNumber = 1,
@@ -49,71 +49,62 @@ export class Dashboard extends React.Component {
         };
 
         const fillWithEmptyWidget = (currentWidgets, columnLayout) => {
-            for (let index = 0; index < currentWidgets.length; index += incrementNumber) {
+            let missingWidget = columnLayout - (currentWidgets.length % columnLayout),
+                totalWidgetShouldBe = currentWidgets.length + missingWidget;
+
+            for (let index = 0; index < totalWidgetShouldBe; index += incrementNumber) {
                 if (typeof currentWidgets[index] === 'undefined') {
                     currentWidgets[index] =
-                    <WidgetSetting
-                        key={`widgetPos_${index + incrementNumber}`}
-                        id={`widgetPos_${index + incrementNumber}`}
-                        addWidget={this.addWidget}
-                        colStyle={getColStyle()}
-                    />;
+                        <WidgetSetting
+                            key={`widgetPos_${index + incrementNumber}`}
+                            id={`widgetPos_${index + incrementNumber}`}
+                            colStyle={getColStyle()}
+                            widgetMode={widgetMode}
+                            addWidget={this.addWidget}
+                        />;
                 }
-            }
-
-            let missingWidget = columnLayout - (currentWidgets.length % columnLayout);
-
-            for (let index = 0; index < missingWidget; index += incrementNumber) {
-                currentWidgets.push(
-                    <WidgetSetting
-                        key={`widgetPos_${currentWidgets.length + incrementNumber}`}
-                        id={`widgetPos_${currentWidgets.length + incrementNumber}`}
-                        addWidget={this.addWidget}
-                        colStyle={getColStyle()}
-                    />
-                );
             }
 
             return currentWidgets;
         };
 
         widgets.forEach((widget) => {
-            const minHeight = widget.maxHeight; // Because of database mismatch !!!
-
             switch (widget.widgetType) {
             case 'TEXT_WIDGET':
                 widgetArray[widget.position + positionOffset] =
                         <TextWidget key={`widgetPos_${widget.position}`}
                             id={`widgetPos_${widget.position}`}
+                            widgetTitle={widget.title}
                             colStyle={getColStyle()}
-                            userHeight={minHeight}
+                            userHeight={widget.maxHeight}
+                            widgetMode={widgetMode}
                             deleteWidget={this.deleteWidget}
                         />;
                 break;
-
             case 'DATABASE_WIDGET':
                 widgetArray[widget.position + positionOffset] =
                         <DatabaseWidget key={`widgetPos_${widget.position}`}
                             id={`widgetPos_${widget.position}`}
+                            widgetTitle={widget.title}
                             colStyle={getColStyle()}
-                            userHeight={minHeight}
+                            userHeight={widget.maxHeight}
+                            widgetMode={widgetMode}
                             deleteWidget={this.deleteWidget}
                         />;
                 break;
-
             case 'TODOLIST_WIDGET':
                 widgetArray[widget.position + positionOffset] =
                         <TodoListWidget key={`widgetPos_${widget.position}`}
                             id={`widgetPos_${widget.position}`}
-                            position={widget.position}
+                            widgetTitle={widget.title}
                             colStyle={getColStyle()}
-                            userHeight={minHeight}
+                            userHeight={widget.maxHeight}
+                            widgetMode={widgetMode}
                             deleteWidget={this.deleteWidget}
                             widgetContent={widget.configs.todos}
                             updateTodoItemInDashboard={this.updateTodoItemInDashboard}
                         />;
                 break;
-
             default:
                 break;
             }
@@ -126,6 +117,30 @@ export class Dashboard extends React.Component {
         this.props.dispatch(changeLayout(parseInt(event.target.value, 10), this.props.dashboard.id));
     }
 
+    addWidget = (widgetPosition, settingData) => {
+        console.log(widgetPosition);
+        console.log(settingData);
+
+        let allWidgets = this.props.dashboard.widgets,
+            newWidget = {
+                widgetType: settingData.widgetType,
+                position: widgetPosition,
+                title: settingData.widgetName,
+                maxWidth: settingData.widgetWidth,
+                maxHeight: settingData.widgetHeight
+            };
+
+        switch (settingData.widgetType) {
+        case 'TODOLIST_WIDGET':
+            newWidget.configs = { todos: [] };
+            allWidgets.push(newWidget);
+            this.props.dispatch(addWidget(allWidgets, this.props.dashboard.id));
+            break;
+        default:
+            break;
+        }
+    }
+
     deleteWidget = (widgetPosition) => {
         let allWidgets = this.props.dashboard.widgets;
         let results = allWidgets.filter((widget) => {
@@ -133,17 +148,6 @@ export class Dashboard extends React.Component {
         });
 
         this.props.dispatch(removeWidget(results, this.props.dashboard.id));
-    }
-
-    addWidget = (widgetPosition, settingData) => {
-        console.log(widgetPosition);
-        console.log(settingData);
-        // let allWidgets = this.props.dashboard.widgets;
-        // let results = allWidgets.filter((widget) => {
-        //     return widget.position !== widgetPosition;
-        // });
-
-        // this.props.dispatch(removeWidget(results, this.props.dashboard.id));
     }
 
     updateTodoItemInDashboard = (position, idTodo, action) => {
@@ -173,11 +177,13 @@ export class Dashboard extends React.Component {
     }
 
     render() {
-        const { layoutColumn, title, widgets } = this.props.dashboard;
+        const { layoutColumn, title, widgets, widgetMode } = this.props.dashboard;
 
         return <DashboardView title={title}
             layoutType={layoutColumn}
-            widgets={this.fillDashboard(widgets)}
+            widgets={this.fillDashboard(
+                widgets,
+                typeof widgetMode === 'undefined' ? 'viewMode' : widgetMode)}
             changeLayout={this.changeLayout} />;
     }
 }
