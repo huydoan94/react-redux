@@ -8,7 +8,9 @@ import { Button } from '../../../components/button';
 import { WidgetContainer } from '../components/widgetContainer';
 import { WidgetHeader } from '../components/widgetHeader';
 import { WidgetBody } from '../components/widgetBody';
-import { ItemList } from '../components/itemList';
+// import { ItemList } from '../components/itemList';
+import Item from '../components/item/item.component';
+
 
 export const TodoListWidgetView = cssModules((props) => {
     const {
@@ -41,6 +43,7 @@ export const TodoListWidgetView = cssModules((props) => {
                 <Input inputAtrribute={inputAddTodo}
                     onEnter={onEnter}
                 />
+
                 <div styleName="widget-container__todo-list-option">
                     <span styleName="padding-right-20">{`${numberActive} Item(s) left`}</span>
                     <Button buttonAttribute={showAllBtn.attribute} buttonEvent={showAllBtn.event}></Button>
@@ -50,12 +53,18 @@ export const TodoListWidgetView = cssModules((props) => {
                         <Button buttonAttribute={clearCompletedBtn.attribute} buttonEvent={clearCompletedBtn.event}></Button>
                     </div>
                 </div>
+
                 <div style={{ overflow: 'auto' }}>
-                    <ItemList
-                        items={tasks}
-                        handleDeleteItem={handleDeleteItem}
-                        updateNumberActive={updateNumberActive}
-                    />
+                    <ul styleName='list__container'>
+                        {tasks.map((item) =>
+                            <Item
+                                key={item.id}
+                                itemObj={item}
+                                handleDeleteItem={handleDeleteItem}
+                                updateNumberActive={updateNumberActive}
+                            />)
+                        }
+                    </ul>
                 </div>
             </WidgetBody>
         </WidgetContainer>

@@ -177,18 +177,8 @@ export class TodoListWidget extends React.Component {
 
         ref.value = '';
         this.props.dispatch(addTodo(taskObj, this.updateListId));
+        this.updateNumberActive(true);
     }
-
-    // getNumberActive = (tasks) => {
-    //     let count = 0;
-    //     let result = '';
-
-    //     count = (tasks.filter((task) => !task.isCompleted)).length;
-
-    //     result = `${count} Item(s) left`;
-
-    //     return result;
-    // }
 
     getCompletedItem = () => {
         const tasks = this.state.tasksLocal;

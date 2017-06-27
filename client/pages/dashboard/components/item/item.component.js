@@ -30,6 +30,7 @@ class Item extends Component {
 
     handleDeleteButtonClick = () => {
         this.props.handleDeleteItem(this.item.id);
+        this.props.updateNumberActive(false);
     }
 
     updateItem = () => {

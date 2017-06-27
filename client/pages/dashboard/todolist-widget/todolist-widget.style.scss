@@ -8,6 +8,15 @@
     }
 }
 
+@include bem-b('list') {
+    @include bem-e('container') {
+        width: 100%;
+        list-style-type: none;
+        padding: 0;
+        margin: 7px 0 0 0;
+    }
+}
+
 @include bem-b('padding-right-20') {
     padding-right: 20px;
 }

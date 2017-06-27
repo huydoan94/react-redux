@@ -8,7 +8,8 @@ export class TextSettingView extends Component {
                 <div className="form-group">
                     <label>Text Content:</label>
                 </div>
-                <MarkdownEditor.MarkdownEditor initialContent="Test"
+                <MarkdownEditor.MarkdownEditor
+                initialContent="Test"
                 iconsSet="font-awesome"
                 style ={{styleTab: {
                     display: 'none'
