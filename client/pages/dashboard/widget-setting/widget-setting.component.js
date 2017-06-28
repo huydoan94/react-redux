@@ -2,19 +2,24 @@ import React from 'react';
 import { WidgetSettingView } from './widget-setting.view';
 import { TextSettingView, DatabaseSettingView, OrgChartSettingView } from './subViews';
 
+let widgetObject = null;
+
 export class WidgetSetting extends React.Component {
     constructor(props) {
         super(props);
-
         this.init();
     }
 
     init = () => {
+        widgetObject = this.props.widget;
         this.state = {
             title: 'Widget Setting',
             mode: 'settingMode',
-            widgetType: 'TEXT_WIDGET',
-            isRevealed: false
+            widgetType: widgetObject ? widgetObject.type : 'TEXT_WIDGET',
+            isRevealed: widgetObject ? true : false,
+            widgetConfig: {
+                text: widgetObject ? widgetObject.text : ''
+            }
         };
     }
 
@@ -168,6 +173,7 @@ export class WidgetSetting extends React.Component {
             });
 
             subViewSetting = <TextSettingView
+                initialContent={this.state.widgetConfig.text}
                 initialConfig={this.props.initialConfig}
                 onSettingConfigsChange={this.onSettingConfigsChange}
             />;

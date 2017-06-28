@@ -17,13 +17,15 @@ export class LoginForm extends React.Component {
         this.inputUsername = {
             type: 'text',
             placeholder: 'Username',
-            value: ''
+            value: '',
+            inputClass: 'input-custom'
         };
 
         this.inputPassword = {
             type: 'text',
             placeholder: 'Password',
-            value: ''
+            value: '',
+            inputClass: 'input-custom'
         };
     }
 

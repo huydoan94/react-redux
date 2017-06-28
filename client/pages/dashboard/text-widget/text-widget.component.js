@@ -1,6 +1,7 @@
 import React from 'react';
 import { TextWidgetView } from './text-widget.view';
 import { connect } from 'react-redux';
+import { WidgetSetting } from '../widget-setting/widget-setting.component';
 
 @connect(state => ({ textWidget: state.textWidget }))
 export class TextWidget extends React.Component {
@@ -23,7 +24,13 @@ export class TextWidget extends React.Component {
             styles: {
                 colStyle: this.props.colStyle,
                 minHeight: this.props.userHeight
-            }
+            },
+            isSetting: false
+        };
+
+        this.widget = {
+            type: 'TEXT_WIDGET',
+            text: this.props.widgetContent
         };
     }
 
@@ -49,6 +56,7 @@ export class TextWidget extends React.Component {
             });
             break;
         case 'setting':
+            this.setState({isSetting: true});
             break;
         case 'remove':
             this.props.deleteWidget(thisWidgetPosition);
@@ -70,9 +78,17 @@ export class TextWidget extends React.Component {
     }
 
     render() {
-        return <TextWidgetView
-            WidgetConfigs={this.state}
-            WidgetStyles={{ colStyle: this.state.styles.colStyle, minHeight: this.state.styles.minHeight }}
-        />;
+        return this.state.isSetting ?
+                    <WidgetSetting
+                        widget={this.widget}
+                        key={this.props.id}
+                        id={this.props.id}
+                        colStyle={this.state.styles.colStyle}
+                        widgetMode={this.state.widgetMode}
+                    /> :
+                    <TextWidgetView
+                        WidgetConfigs={this.state}
+                        WidgetStyles={{ colStyle: this.state.styles.colStyle, minHeight: this.state.styles.minHeight }}
+                    />;
     }
 }
