@@ -13,7 +13,13 @@ export const SelectView = ({ WidgetSelector }) => {
             >
                 {
                     options.map((option) =>
-                        <option key={option.id} value={option.type}>{option.type}</option>)
+                        <option
+                            key={option.id}
+                            id={option.id}
+                            value={option.type}
+                        >
+                            {option.type}
+                        </option>)
                 };
             </FormControl>
         </FormGroup>

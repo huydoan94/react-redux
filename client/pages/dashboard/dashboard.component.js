@@ -12,6 +12,7 @@ import { updateDashBoard } from './dashboard.service';
 import { TextWidget } from './text-widget';
 import { TodoListWidget } from './todolist-widget';
 import { DatabaseWidget } from './database-widget';
+import { OrgchartWidget } from './orgchart-widget';
 import { WidgetSetting } from './widget-setting';
 
 @connect(state => ({ dashboard: state.dashboard }))
@@ -105,6 +106,18 @@ export class Dashboard extends React.Component {
                             deleteWidget={this.deleteWidget}
                             widgetContent={widget.configs.todos}
                             updateTodoItemInDashboard={this.updateTodoItemInDashboard}
+                        />;
+                break;
+            case 'ORGCHART_WIDGET':
+                widgetArray[widget.position + positionOffset] =
+                        <OrgchartWidget key={`widgetPos_${widget.position}`}
+                            id={`widgetPos_${widget.position}`}
+                            widgetTitle={widget.title}
+                            colStyle={getColStyle()}
+                            userHeight={widget.maxHeight}
+                            widgetMode={widgetMode}
+                            deleteWidget={this.deleteWidget}
+                            widgetContent={widget.configs.root}
                         />;
                 break;
             default:

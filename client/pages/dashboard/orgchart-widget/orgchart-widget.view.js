@@ -1,68 +1,65 @@
 import React from 'react';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import cssModules from 'react-css-modules';
+
+import style from './orgchart-widget.style.scss';
 
 import { WidgetContainer } from '../components/widgetContainer';
 import { WidgetHeader } from '../components/widgetHeader';
 import { WidgetBody } from '../components/widgetBody';
 
-export const DatabaseWidgetView = ({ WidgetType, DatabaseTable, colStyle, maxHeight }) => {
-    const { headers, values } = DatabaseTable;
-
-    const getCaret = (direction) => {
-        switch (direction) {
-        case 'asc':
-            return <span className='glyphicon glyphicon-sort-by-attributes'></span>;
-        case 'desc':
-            return <span className='glyphicon glyphicon-sort-by-attributes-alt'></span>;
-        default:
-            return;
-        }
-    };
-
-    const tableOptions = {
-        sizePerPage: 5,
-        paginationSize: 3,
-        prePage: '<<',
-        nextPage: '>>',
-        withFirstAndLast: false,
-        hideSizePerPage: true,
-        alwaysShowAllBtns: true,
-        paginationPosition: 'top',
-        onPageChange: (page, sizePerPage) => {
-            console.log(page + ' + ' + sizePerPage);
-            // TODO: Missing showing current contact block
-        }
-    };
+export const OrgchartWidgetView = cssModules((props) => {
+    const { WidgetConfigs } = props,
+        { colStyle, minHeight } = props.WidgetStyles,
+        { rootContact } = WidgetConfigs;
 
     return (
-        <WidgetContainer colStyle={colStyle} maxHeight={maxHeight}>
-            <WidgetHeader widget={WidgetType} className='row col-md-12' />
-            <WidgetBody className='row col-md-12'>
-                <div style={{ overflow: 'auto' }}>
-                    <BootstrapTable
-                        data={values}
-                        bordered={false}
-                        striped
-                        hover
-                        condensed
-                        pagination
-                        options={tableOptions}>
-                        {headers.map((header) => {
-                            return (
-                                <TableHeaderColumn
-                                    dataField={header}
-                                    dataSort={true}
-                                    caretRender={getCaret}
-                                    isKey={header === 'id'}
-                                    key={header}
-                                    width='100%'>
-                                    {header}
-                                </TableHeaderColumn>
-                            );
-                        })}
-                    </BootstrapTable>
-                </div>
+        <WidgetContainer colStyle={colStyle} minHeight={minHeight}>
+            <WidgetHeader widget={{
+                title: WidgetConfigs.title,
+                widgetMode: WidgetConfigs.widgetMode,
+                buttonEventCatcher: WidgetConfigs.panelEvent
+            }} />
+            <WidgetBody>
+                <section styleName="tree">
+                    <ul styleName="tree-root-contact">
+                        {rootContact !== null && <ContactTemplate rootContact={rootContact} />}
+                    </ul>
+                </section>
             </WidgetBody>
         </WidgetContainer>
     );
-};
+}, style);
+
+const ContactTemplate = cssModules((props) => {
+    const { rootContact } = props,
+        { id, firstName, lastName, department, employeeId, avatar } = rootContact;
+
+    return (
+        <li>
+            <div styleName='card'>
+                <div styleName="card__avatar">
+                    <label htmlFor={`${id}-avatar-uploader`}>
+                        <img styleName="card__avatar__img" id={`${id}-avatar-img`} src={avatar} />
+                    </label>
+                </div>
+                <div styleName="card__detail">
+                    <h1 styleName="card__name">{firstName} {lastName}</h1>
+                    <p styleName="card__department">{department}</p>
+                    <a styleName="card__email" href="#">{employeeId}</a>
+                    <p styleName="card__email-domain">@kms-technology.com</p>
+                </div>
+            </div>
+
+            {rootContact.children.length !== 0 &&
+                <ul>
+                    {rootContact.children.map((child) =>
+                        <ContactTemplate
+                            key={`contact_${child.id}`}
+                            rootContact={child}
+                        />
+                    )}
+                </ul>
+            }
+        </li>
+    );
+}, style);
