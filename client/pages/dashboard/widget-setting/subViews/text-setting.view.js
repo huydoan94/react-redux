@@ -2,6 +2,20 @@ import React, { Component } from 'react';
 import MarkdownEditor from 'react-markdown-editor';
 
 export class TextSettingView extends Component {
+    constructor(props) {
+        super(props);
+
+        this.initialContent = 'An _example_ **text**';
+    }
+
+    componentDidMount() {
+        this.props.onSettingConfigsChange(this.initialContent);
+    }
+
+    onEditorType = (texts) => {
+        this.props.onSettingConfigsChange(texts);
+    }
+
     render() {
         return (
             <div>
@@ -9,11 +23,9 @@ export class TextSettingView extends Component {
                     <label>Text Content:</label>
                 </div>
                 <MarkdownEditor.MarkdownEditor
-                initialContent="Test"
+                initialContent={this.initialContent}
                 iconsSet="font-awesome"
-                style ={{styleTab: {
-                    display: 'none'
-                }}}
+                onContentChange={this.onEditorType}
                 />
             </div>
         );

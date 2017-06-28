@@ -79,6 +79,7 @@ export class Dashboard extends React.Component {
                             userHeight={widget.maxHeight}
                             widgetMode={widgetMode}
                             deleteWidget={this.deleteWidget}
+                            widgetContent={widget.configs.text}
                         />;
                 break;
             case 'DATABASE_WIDGET':
@@ -90,6 +91,7 @@ export class Dashboard extends React.Component {
                             userHeight={widget.maxHeight}
                             widgetMode={widgetMode}
                             deleteWidget={this.deleteWidget}
+                            widgetContent={widget.configs}
                         />;
                 break;
             case 'TODOLIST_WIDGET':
@@ -118,27 +120,18 @@ export class Dashboard extends React.Component {
     }
 
     addWidget = (widgetPosition, settingData) => {
-        console.log(widgetPosition);
-        console.log(settingData);
-
         let allWidgets = this.props.dashboard.widgets,
             newWidget = {
                 widgetType: settingData.widgetType,
                 position: widgetPosition,
                 title: settingData.widgetName,
                 maxWidth: settingData.widgetWidth,
-                maxHeight: settingData.widgetHeight
+                maxHeight: settingData.widgetHeight,
+                configs: settingData.widgetConfig
             };
 
-        switch (settingData.widgetType) {
-        case 'TODOLIST_WIDGET':
-            newWidget.configs = { todos: [] };
-            allWidgets.push(newWidget);
-            this.props.dispatch(addWidget(allWidgets, this.props.dashboard.id));
-            break;
-        default:
-            break;
-        }
+        allWidgets.push(newWidget);
+        this.props.dispatch(addWidget(allWidgets, this.props.dashboard.id));
     }
 
     deleteWidget = (widgetPosition) => {

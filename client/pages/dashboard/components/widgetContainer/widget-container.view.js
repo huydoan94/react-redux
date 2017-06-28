@@ -3,7 +3,7 @@ import cssModules from 'react-css-modules';
 import style from './widget-container.style.scss';
 
 export const WidgetContainer = cssModules((props) => {
-    const isHidden = (props.widgetMode === 'viewMode') ? 'hidden' : null,
+    const isHidden = (props.isHidden === 'yes') ? 'hidden' : null,
         colStyle = props.colStyle,
         parentStyle = typeof colStyle === 'string' ? colStyle : null,
         childStyle = typeof colStyle === 'object' ? colStyle : {minHeight: props.minHeight, visibility: isHidden};

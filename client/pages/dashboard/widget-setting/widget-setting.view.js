@@ -21,13 +21,14 @@ export const WidgetSettingView = cssModules((props) => {
         SaveButton,
         CancelButton,
         RevealSettings,
-        widgetMode
+        isHidden
     } = props;
 
     return (
-        <WidgetContainer colStyle={WidgetStyles.colStyle}
-            widgetMode={widgetMode}>
-            <WidgetHeader widget={{ title: WidgetConfigs.title, mode: WidgetConfigs.mode }} />
+        <WidgetContainer colStyle={WidgetStyles.colStyle} isHidden={isHidden}>
+            <WidgetHeader widget={{
+                title: WidgetConfigs.title
+            }} />
             <WidgetBody>
                 {WidgetConfigs.isRevealed ? (
                     <div styleName='setting'>

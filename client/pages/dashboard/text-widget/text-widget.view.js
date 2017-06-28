@@ -1,5 +1,6 @@
 import React from 'react';
 import cssModules from 'react-css-modules';
+import Markdown from 'react-remarkable';
 
 import style from './text-widget.style.scss';
 
@@ -19,7 +20,9 @@ export const TextWidgetView = cssModules((props) => {
             }} />
             <WidgetBody>
                 <div styleName='widget-container__text'>
-                    {WidgetConfigs.configs.text}
+                    <Markdown
+                        source={WidgetConfigs.configs.text}
+                    />
                 </div>
             </WidgetBody>
         </WidgetContainer>

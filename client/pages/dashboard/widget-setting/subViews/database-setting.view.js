@@ -1,13 +1,73 @@
 import React, { Component } from 'react';
 import { Select } from '../../../../components/select';
 
-import {DatabaseColumns} from '../../../dashboard/components/databaseColumns';
+import { DatabaseColumns } from '../../../dashboard/components/databaseColumns';
+import { getAll } from './../../database-widget/database-widget.services';
+
+const firstElement = 0,
+    numberOfElements = 1;
 
 export class DatabaseSettingView extends Component {
     constructor(props) {
         super(props);
 
-        this.props.propsChanged('Contacts');
+        this.init();
+    }
+
+    componentDidMount() {
+        this.getAllDbHeader('contacts');
+    }
+
+    init() {
+        this.state = {
+            sourceDatabase: 'contacts',
+            availableColumns: {
+                title: 'Available Columns:',
+                columns: [],
+                onSelect: (event) => {
+                    const currentId = parseInt((event.target.id).substring('dbColumns'.length), 10);
+                    let available = Object.assign({}, this.state.availableColumns),
+                        selected = Object.assign({}, this.state.selectedColumns),
+                        availableColumns = available.columns,
+                        selectedColumns = selected.columns;
+
+                    selectedColumns.push(
+                        (availableColumns.splice(currentId, numberOfElements))[firstElement]
+                    );
+                    available = { ...available, columns: availableColumns };
+                    selected = { ...selected, columns: selectedColumns };
+
+                    this.setState({ availableColumns: available, selectedColumns: selected });
+                    this.props.onSettingConfigsChange({
+                        source: this.state.sourceDatabase,
+                        columns: selectedColumns
+                    });
+                }
+            },
+            selectedColumns: {
+                title: 'Selected columns:',
+                columns: [],
+                onSelect: (event) => {
+                    const currentId = parseInt((event.target.id).substring('dbColumns'.length), 10);
+                    let available = Object.assign({}, this.state.availableColumns),
+                        selected = Object.assign({}, this.state.selectedColumns),
+                        availableColumns = available.columns,
+                        selectedColumns = selected.columns;
+
+                    availableColumns.push(
+                        (selectedColumns.splice(currentId, numberOfElements))[firstElement]
+                    );
+                    available = { ...available, columns: availableColumns };
+                    selected = { ...selected, columns: selectedColumns };
+
+                    this.setState({ availableColumns: available, selectedColumns: selected });
+                    this.props.onSettingConfigsChange({
+                        source: this.state.sourceDatabase,
+                        columns: selectedColumns
+                    });
+                }
+            }
+        };
     }
 
     WidgetSelector = {
@@ -19,7 +79,7 @@ export class DatabaseSettingView extends Component {
             },
             {
                 id: 1,
-                type: 'Stock'
+                type: 'Stocks'
             },
             {
                 id: 2,
@@ -27,28 +87,62 @@ export class DatabaseSettingView extends Component {
             }],
         events: {
             onSelectorChange: (event) => {
-                this.props.propsChanged(event.target.value);
+                switch (event.target.value) {
+                case 'Contacts':
+                    this.getAllDbHeader('contacts');
+                    break;
+                case 'Stocks':
+                    this.getAllDbHeader('stocks');
+                    break;
+                case 'Tasks':
+                    this.getAllDbHeader('tasks');
+                    break;
+                default:
+                    this.getAllDbHeader('contacts');
+                    break;
+                }
             }
         }
     }
 
-    DatabaseColumns = {
-        title: 'Colums:',
-        columns: ['ID', 'Email', 'Phone']
-    }
+    getAllDbHeader(database) {
+        getAll(database).then((datas) => {
+            let values = datas.map((data) => {
+                    Reflect.deleteProperty(data, 'id');
+                    Reflect.deleteProperty(data, 'meta');
 
-    SelectedColumns = {
-        title: 'Selected colums:',
-        columns: ['Name', 'Title']
+                    return data;
+                }),
+                available = Object.assign({}, this.state.availableColumns),
+                selected = Object.assign({}, this.state.selectedColumns),
+                availableColumns = available.columns,
+                selectedColumns = selected.columns;
+
+            availableColumns = Object.keys(values[firstElement]);
+            selectedColumns.length = 0;
+            available = { ...available, columns: availableColumns };
+            selected = { ...selected, columns: selectedColumns };
+
+            this.setState({
+                sourceDatabase: database,
+                availableColumns: available,
+                selectedColumns: selected
+            });
+
+            this.props.onSettingConfigsChange({
+                source: database,
+                columns: selectedColumns
+            });
+        });
     }
 
     render() {
         return (
             <div>
                 <Select WidgetSelector={this.WidgetSelector} />
-                <div>
-                    <DatabaseColumns databaseColumns={this.DatabaseColumns} />
-                    <DatabaseColumns databaseColumns={this.SelectedColumns} />
+                <div style={{ display: 'flex' }}>
+                    <DatabaseColumns databaseColumns={this.state.availableColumns} />
+                    <DatabaseColumns databaseColumns={this.state.selectedColumns} />
                 </div>
             </div>
         );

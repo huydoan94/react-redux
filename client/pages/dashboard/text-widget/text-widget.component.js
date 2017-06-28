@@ -14,7 +14,7 @@ export class TextWidget extends React.Component {
         this.state = {
             title: this.props.widgetTitle,
             configs: {
-                text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+                text: this.props.widgetContent
             },
             widgetMode: this.props.widgetMode,
             panelEvent: (event) => {

@@ -11,10 +11,22 @@ export class DatabaseWidget extends React.Component {
         this.init();
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            styles: {
+                colStyle: nextProps.colStyle,
+                minHeight: nextProps.userHeight
+            },
+            title: nextProps.widgetTitle,
+            widgetMode: nextProps.widgetMode
+        });
+    }
+
     init = () => {
         this.state = {
             title: this.props.widgetTitle,
             widgetMode: this.props.widgetMode,
+            database: this.props.widgetContent.source,
             DatabaseTable: {
                 headers: ["id", "None", "None"],
                 values: []
@@ -28,14 +40,17 @@ export class DatabaseWidget extends React.Component {
             }
         };
 
-        getAll().then((datas) => {
+        getAll(this.state.database).then((datas) => {
             let values = datas.map((data) => {
-                Reflect.deleteProperty(data, 'meta');
+                    Reflect.deleteProperty(data, 'meta');
 
-                return data;
-            });
-            let headers = Object.keys(values[0]);
+                    return data;
+                }),
+                headers = Object.keys(values[0]).filter((key) => {
+                    return (this.props.widgetContent.columns).includes(key);
+                });
 
+            headers.includes('id') ? null : headers.push('id');
             this.setState({ DatabaseTable: { ...this.state.DatabaseTable, headers, values } });
         });
     }
@@ -69,17 +84,6 @@ export class DatabaseWidget extends React.Component {
         default:
             break;
         }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            styles: {
-                colStyle: nextProps.colStyle,
-                minHeight: nextProps.userHeight
-            },
-            title: nextProps.widgetTitle,
-            widgetMode: nextProps.widgetMode
-        });
     }
 
     render() {

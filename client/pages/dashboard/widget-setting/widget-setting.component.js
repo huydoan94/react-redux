@@ -14,9 +14,12 @@ export class WidgetSetting extends React.Component {
             title: 'Widget Setting',
             mode: 'settingMode',
             widgetType: 'TEXT_WIDGET',
-            subViewSetting: <TextSettingView />,
             isRevealed: false
         };
+    }
+
+    componentWillMount() {
+        this.setSubViewSetting('Text');
     }
 
     WidgetSelector = {
@@ -41,58 +44,66 @@ export class WidgetSetting extends React.Component {
         ],
         events: {
             onSelectorChange: (event) => {
-                const subViewSetting = this.setSubViewSetting(event.target.value);
-
-                this.setState({ subViewSetting });
+                this.setSubViewSetting(event.target.value);
             }
         }
     }
 
-    inputWidgetName = {
+    WidgetNameInput = {
         type: 'text',
         label: 'Widget Title',
         placeholder: 'New Widget',
         value: '',
         event: (ref) => {
-            this.inputWidgetName.value = ref.value;
+            this.WidgetNameInput.value = ref.value;
         }
     };
 
-    inputWidgetHeight = {
+    WidgetHeightInput = {
         type: 'text',
         label: 'Min Height',
         placeholder: '200',
         value: '',
         event: (ref) => {
-            this.inputWidgetHeight.value = ref.value;
+            this.WidgetHeightInput.value = ref.value;
         }
     };
 
-    inputWidgetWidth = {
+    WidgetWidthInput = {
         type: 'text',
         label: 'Min Width',
         placeholder: '400',
         value: '',
         event: (ref) => {
-            this.inputWidgetWidth.value = ref.value;
+            this.WidgetWidthInput.value = ref.value;
         }
     };
 
     SaveButton = {
         label: 'Save',
         events: {
-            onSave: (event) => {
-                if (event.target) {
-                    let thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10),
-                        data = {
-                            widgetType: this.state.widgetType,
-                            widgetName: this.inputWidgetName.value === '' ? 'Widget' : this.inputWidgetName.value,
-                            widgetHeight: this.inputWidgetHeight.value === '' ? 200 : parseInt(this.inputWidgetHeight.value, 10),
-                            widgetWidth: this.inputWidgetWidth.value === '' ? 400 : parseInt(this.inputWidgetWidth.value, 10)
-                        };
+            onSave: () => {
+                const defaultWidgetName = 'A Widget',
+                    defaultWidth = 400,
+                    defaultHeight = 200;
 
-                    this.props.addWidget(thisWidgetPosition, data);
-                }
+                let thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10),
+                    data = {
+                        widgetType: this.state.widgetType,
+
+                        widgetName: this.WidgetNameInput.value === '' ?
+                            defaultWidgetName : this.WidgetNameInput.value,
+
+                        widgetHeight: this.WidgetHeightInput.value === '' ?
+                            defaultHeight : parseInt(this.WidgetHeightInput.value, 10),
+
+                        widgetWidth: this.WidgetWidthInput.value === '' ?
+                            defaultWidth : parseInt(this.WidgetWidthInput.value, 10),
+
+                        widgetConfig: this.state.widgetConfig
+                    };
+
+                this.props.addWidget(thisWidgetPosition, data);
             }
         }
     }
@@ -108,38 +119,118 @@ export class WidgetSetting extends React.Component {
         }
     }
 
-    propsChanged = (data) => {
-        console.log(data);
+    onSettingConfigsChange = (data) => {
+        switch (this.state.widgetType) {
+        case 'TEXT_WIDGET':
+            this.setState({
+                widgetConfig: {
+                    text: data
+                }
+            });
+            break;
+
+        case 'DATABASE_WIDGET':
+            this.setState({
+                widgetConfig: {
+                    source: data.source,
+                    columns: data.columns
+                }
+            });
+            break;
+
+        case 'ORGCHART_WIDGET':
+            this.setState({
+                widgetConfig: {
+                    root: data
+                }
+            });
+            break;
+
+        default:
+            this.setState({
+                widgetConfig: {
+                    text: data
+                }
+            });
+        }
     }
 
     setSubViewSetting = (viewSetting) => {
+        let subViewSetting = null;
+
         switch (viewSetting) {
         case 'Text':
-            this.setState({ widgetType: 'TEXT_WIDGET' });
+            this.setState({
+                widgetType: 'TEXT_WIDGET',
+                widgetConfig: {
+                    text: ''
+                }
+            });
 
-            return <TextSettingView />;
+            subViewSetting = <TextSettingView
+                initialConfig={this.props.initialConfig}
+                onSettingConfigsChange={this.onSettingConfigsChange}
+            />;
+
+            break;
         case 'Database':
-            this.setState({ widgetType: 'DATABASE_WIDGET' });
+            this.setState({
+                widgetType: 'DATABASE_WIDGET',
+                widgetConfig: {
+                    source: '',
+                    columns: []
+                }
+            });
 
-            return <DatabaseSettingView propsChanged={this.propsChanged} />;
+            subViewSetting = <DatabaseSettingView
+                initialConfig={this.props.initialConfig}
+                onSettingConfigsChange={this.onSettingConfigsChange}
+            />;
+
+            break;
         case 'Org Chart':
-            this.setState({ widgetType: 'ORGCHART_WIDGET' });
+            this.setState({
+                widgetType: 'ORGCHART_WIDGET',
+                widgetConfig: {
+                    root: ''
+                }
+            });
 
-            return <OrgChartSettingView />;
+            subViewSetting = <OrgChartSettingView
+                initialConfig={this.props.initialConfig}
+                onSettingConfigsChange={this.onSettingConfigsChange}
+            />;
+
+            break;
         case 'Todo List':
-            this.setState({ widgetType: 'TODOLIST_WIDGET' });
+            this.setState({
+                widgetType: 'TODOLIST_WIDGET',
+                widgetConfig: {
+                    todos: []
+                }
+            });
 
-            return;
+            break;
         default:
-            this.setState({ widgetType: 'TEXT_WIDGET' });
+            this.setState({
+                widgetType: 'TEXT_WIDGET',
+                widgetConfig: {
+                    text: ''
+                }
+            });
 
-            return <TextSettingView />;
+            subViewSetting = <TextSettingView
+                initialConfig={this.props.initialConfig}
+                onSettingConfigsChange={this.onSettingConfigsChange}
+            />;
         }
+
+        this.setState({ subViewSetting });
     }
 
     revealSettings = (event) => {
         if (event.target) {
-            this.setState({ isRevealed: true, subViewSetting: <TextSettingView /> });
+            this.setState({ isRevealed: true });
         }
     }
 
@@ -149,13 +240,13 @@ export class WidgetSetting extends React.Component {
                 WidgetConfigs={this.state}
                 WidgetStyles={{ colStyle: this.props.colStyle }}
                 WidgetSelector={this.WidgetSelector}
-                WidgetNameInput={this.inputWidgetName}
-                WidgetHeightInput={this.inputWidgetHeight}
-                WidgetWidthInput={this.inputWidgetWidth}
+                WidgetNameInput={this.WidgetNameInput}
+                WidgetHeightInput={this.WidgetHeightInput}
+                WidgetWidthInput={this.WidgetWidthInput}
                 SaveButton={this.SaveButton}
                 CancelButton={this.CancelButton}
                 RevealSettings={this.revealSettings}
-                widgetMode={this.props.widgetMode}
+                isHidden={this.props.widgetMode === 'viewMode' ? 'yes' : null}
             />
         );
     }

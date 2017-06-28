@@ -1,7 +1,7 @@
 import { interactWithServer } from './../../../core/database-handler';
 
-const URL = 'http://localhost:8080/api/contacts';
+const URL = 'http://localhost:8080/api';
 
-export const getAll = () => {
-    return interactWithServer(URL, 'GET');
+export const getAll = (database) => {
+    return interactWithServer(`${URL}/${database}`, 'GET');
 };

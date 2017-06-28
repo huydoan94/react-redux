@@ -1,10 +1,22 @@
 .columns-wrapper {
     padding: 10px;
-    border: 1px solid #cbcbcb
+    border: 1px solid #cbcbcb;
+    display: block;
+}
+
+.columns-container {
+    display: inline-block;
+    width: 50%;
+    padding: 0 2px;
 }
 
 .column {
     padding: 5px;
     border: 1px dashed;
     margin-bottom: 10px;
+    background-color: #F6F6F6;
+}
+
+.column:hover {
+    cursor: pointer;
 }
