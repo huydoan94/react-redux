@@ -6,6 +6,7 @@ import style from './orgchart-widget.style.scss';
 import { WidgetContainer } from '../components/widgetContainer';
 import { WidgetHeader } from '../components/widgetHeader';
 import { WidgetBody } from '../components/widgetBody';
+import { avatarImg } from './avatar.img';
 
 export const OrgchartWidgetView = cssModules((props) => {
     const { WidgetConfigs } = props,
@@ -21,7 +22,7 @@ export const OrgchartWidgetView = cssModules((props) => {
             }} />
             <WidgetBody>
                 <section styleName="tree">
-                    <ul styleName="tree-root-contact">
+                    <ul styleName="tree-root-contact" style={{ transform: 'scale(0.7)' }}>
                         {rootContact !== null && <ContactTemplate rootContact={rootContact} />}
                     </ul>
                 </section>
@@ -32,14 +33,14 @@ export const OrgchartWidgetView = cssModules((props) => {
 
 const ContactTemplate = cssModules((props) => {
     const { rootContact } = props,
-        { id, firstName, lastName, department, employeeId, avatar } = rootContact;
+        { id, firstName, lastName, department, employeeId } = rootContact;
 
     return (
         <li>
             <div styleName='card'>
                 <div styleName="card__avatar">
                     <label htmlFor={`${id}-avatar-uploader`}>
-                        <img styleName="card__avatar__img" id={`${id}-avatar-img`} src={avatar} />
+                        <img styleName="card__avatar__img" id={`${id}-avatar-img`} src={avatarImg} />
                     </label>
                 </div>
                 <div styleName="card__detail">

@@ -2,8 +2,6 @@ import React from 'react';
 import { WidgetSettingView } from './widget-setting.view';
 import { TextSettingView, DatabaseSettingView, OrgChartSettingView } from './subViews';
 
-let widgetObject = null;
-
 export class WidgetSetting extends React.Component {
     constructor(props) {
         super(props);
@@ -11,20 +9,46 @@ export class WidgetSetting extends React.Component {
     }
 
     init = () => {
-        widgetObject = this.props.widget;
         this.state = {
             title: 'Widget Setting',
             mode: 'settingMode',
-            widgetType: widgetObject ? widgetObject.type : 'TEXT_WIDGET',
-            isRevealed: widgetObject ? true : false,
-            widgetConfig: {
-                text: widgetObject ? widgetObject.text : ''
-            }
+            widgetType: 'TEXT_WIDGET',
+            isRevealed: false
         };
     }
 
     componentWillMount() {
-        this.setSubViewSetting('Text');
+        if (this.props.originWidget) {
+            const originWidget = this.props.originWidget;
+
+            switch (originWidget.type) {
+            case 'TEXT_WIDGET':
+                this.setSubViewSetting('Text');
+                break;
+            case 'DATABASE_WIDGET':
+                this.setSubViewSetting('Database');
+                break;
+            case 'ORGCHART_WIDGET':
+                this.setSubViewSetting('Org Chart');
+                break;
+            case 'TODOLIST_WIDGET':
+                this.setSubViewSetting('Todo List');
+                break;
+            default:
+                break;
+            }
+
+            this.WidgetNameInput.value = originWidget.widgetContent.title;
+            this.WidgetHeightInput.value = originWidget.widgetContent.minHeight;
+
+            this.setState({
+                title: originWidget.widgetContent.title,
+                widgetType: originWidget.type,
+                isRevealed: true
+            });
+        } else {
+            this.setSubViewSetting('Text');
+        }
     }
 
     WidgetSelector = {
@@ -32,19 +56,27 @@ export class WidgetSetting extends React.Component {
         options: [
             {
                 id: 0,
-                type: 'Text'
+                type: 'Text',
+                selected: this.props.originWidget ?
+                    this.props.originWidget.type === 'TEXT_WIDGET' : false
             },
             {
                 id: 1,
-                type: 'Database'
+                type: 'Database',
+                selected: this.props.originWidget ?
+                    this.props.originWidget.type === 'DATABASE_WIDGET' : false
             },
             {
                 id: 2,
-                type: 'Org Chart'
+                type: 'Org Chart',
+                selected: this.props.originWidget ?
+                    this.props.originWidget.type === 'ORGCHART_WIDGET' : false
             },
             {
                 id: 3,
-                type: 'Todo List'
+                type: 'Todo List',
+                selected: this.props.originWidget ?
+                    this.props.originWidget.type === 'TODOLIST_WIDGET' : false
             }
         ],
         events: {
@@ -108,7 +140,7 @@ export class WidgetSetting extends React.Component {
                         widgetConfig: this.state.widgetConfig
                     };
 
-                this.props.addWidget(thisWidgetPosition, data);
+                this.props.addOrUpdateWidget(thisWidgetPosition, data, typeof this.props.originWidget !== 'undefined');
             }
         }
     }
@@ -116,8 +148,10 @@ export class WidgetSetting extends React.Component {
     CancelButton = {
         label: 'Cancel',
         events: {
-            onCancel: (event) => {
-                if (event.target) {
+            onCancel: () => {
+                if (this.props.originWidget) {
+                    this.props.originWidget.onCancel();
+                } else {
                     this.setState({ isRevealed: false });
                 }
             }
@@ -166,45 +200,34 @@ export class WidgetSetting extends React.Component {
         switch (viewSetting) {
         case 'Text':
             this.setState({
-                widgetType: 'TEXT_WIDGET',
-                widgetConfig: {
-                    text: ''
-                }
+                widgetType: 'TEXT_WIDGET'
             });
 
             subViewSetting = <TextSettingView
-                initialContent={this.state.widgetConfig.text}
-                initialConfig={this.props.initialConfig}
                 onSettingConfigsChange={this.onSettingConfigsChange}
+                initialContent={this.props.originWidget}
             />;
 
             break;
         case 'Database':
             this.setState({
-                widgetType: 'DATABASE_WIDGET',
-                widgetConfig: {
-                    source: '',
-                    columns: []
-                }
+                widgetType: 'DATABASE_WIDGET'
             });
 
             subViewSetting = <DatabaseSettingView
-                initialConfig={this.props.initialConfig}
                 onSettingConfigsChange={this.onSettingConfigsChange}
+                initialContent={this.props.originWidget}
             />;
 
             break;
         case 'Org Chart':
             this.setState({
-                widgetType: 'ORGCHART_WIDGET',
-                widgetConfig: {
-                    root: ''
-                }
+                widgetType: 'ORGCHART_WIDGET'
             });
 
             subViewSetting = <OrgChartSettingView
-                initialConfig={this.props.initialConfig}
                 onSettingConfigsChange={this.onSettingConfigsChange}
+                initialContent={this.props.originWidget}
             />;
 
             break;
@@ -212,22 +235,20 @@ export class WidgetSetting extends React.Component {
             this.setState({
                 widgetType: 'TODOLIST_WIDGET',
                 widgetConfig: {
-                    todos: []
+                    todos: this.props.originWidget && typeof this.props.originWidget.widgetContent !== 'undefined' ?
+                        this.props.originWidget.widgetContent.todos.map((todo) => parseInt(todo.id, 10)) : []
                 }
             });
 
             break;
         default:
             this.setState({
-                widgetType: 'TEXT_WIDGET',
-                widgetConfig: {
-                    text: ''
-                }
+                widgetType: 'TEXT_WIDGET'
             });
 
             subViewSetting = <TextSettingView
-                initialConfig={this.props.initialConfig}
                 onSettingConfigsChange={this.onSettingConfigsChange}
+                initialContent={this.props.originWidget}
             />;
         }
 

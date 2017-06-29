@@ -5,7 +5,9 @@ export class TextSettingView extends Component {
     constructor(props) {
         super(props);
 
-        this.initialContent = this.props.initialContent;
+        this.initialContent = this.props.initialContent &&
+            this.props.initialContent.widgetContent.text ?
+                this.props.initialContent.widgetContent.text : 'An _example_ **text**';
     }
 
     componentDidMount() {

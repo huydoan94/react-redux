@@ -4,6 +4,7 @@ import { remove } from 'lodash';
 
 import { getAllTodo, addTodo, filterTodo, deleteTodo, deleteCompletedTodo } from './todolist-widget.action';
 import { TodoListWidgetView } from './todolist-widget.view';
+import { WidgetSetting } from '../widget-setting/widget-setting.component';
 
 const empty = -1;
 let isFilterCompleted = false;
@@ -17,6 +18,7 @@ export class TodoListWidget extends React.Component {
 
     init = () => {
         this.state = {
+            type: 'TODOLIST_WIDGET',
             title: this.props.widgetTitle,
             widgetMode: this.props.widgetMode,
             listId: this.props.widgetContent,
@@ -28,7 +30,8 @@ export class TodoListWidget extends React.Component {
             styles: {
                 colStyle: this.props.colStyle,
                 minHeight: this.props.userHeight
-            }
+            },
+            isSetting: false
         };
 
         this.triggerPanelEvent = (eventType) => {
@@ -53,6 +56,7 @@ export class TodoListWidget extends React.Component {
                 });
                 break;
             case 'setting':
+                this.setState({ isSetting: true });
                 break;
             case 'remove':
                 this.props.deleteWidget(thisWidgetPosition);
@@ -133,6 +137,27 @@ export class TodoListWidget extends React.Component {
         this.props.dispatch(getAllTodo());
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (!this.state.tasksLocal) {
+            this.setState({
+                tasksLocal: this.getTaskLocal(nextProps.todoList)
+            });
+        } else if (nextProps.todoList.widget && nextProps.todoList.widget === this.state.position) {
+            this.setState({
+                tasksLocal: nextProps.todoList.data
+            });
+        }
+
+        this.setState({
+            styles: {
+                colStyle: nextProps.colStyle,
+                minHeight: nextProps.userHeight
+            },
+            title: nextProps.widgetTitle,
+            widgetMode: nextProps.widgetMode
+        });
+    }
+
     filterItem = (type, condition) => {
         this.props.dispatch(filterTodo(type, condition, this.state.listId, this.state.position));
     };
@@ -156,11 +181,12 @@ export class TodoListWidget extends React.Component {
 
     updateNumberActive = (isCompleted) => {
         let numberLefts = this.state.numberActive;
+        const incrementNumber = 1;
 
         if (isCompleted) {
-            numberLefts++;
+            numberLefts += incrementNumber;
         } else {
-            numberLefts--;
+            numberLefts -= incrementNumber;
         }
         this.setState({
             numberActive: numberLefts
@@ -212,48 +238,51 @@ export class TodoListWidget extends React.Component {
         return tasks;
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (!this.state.tasksLocal) {
-            this.setState({
-                tasksLocal: this.getTaskLocal(nextProps.todoList)
-            });
-        } else if (nextProps.todoList.widget && nextProps.todoList.widget === this.state.position) {
-            this.setState({
-                tasksLocal: nextProps.todoList.data
-            });
-        }
-
-        this.setState({
-            styles: {
-                colStyle: nextProps.colStyle,
-                minHeight: nextProps.userHeight
-            },
-            title: nextProps.widgetTitle,
-            widgetMode: nextProps.widgetMode
-        });
+    onUpdateCompleted = (widgetPosition, settingData, isUpdate) => {
+        isUpdate ? this.setState({ isSetting: false }) : null;
+        this.props.addOrUpdateWidget(widgetPosition, settingData, isUpdate);
     }
 
     render() {
         while (!this.state.tasksLocal) {
-            return (null);
+            return null;
         }
 
-        return <TodoListWidgetView
-            widget={{ title: this.state.title, widgetMode: this.state.widgetMode }}
-            handleDeleteItem={this.handleDeleteItem}
-            updateNumberActive={this.updateNumberActive}
-            inputAddTodo={this.inputAddTodo}
-            onEnter={this.onEnter}
-            showAllBtn={this.showAllBtn}
-            showActiveBtn={this.showActiveBtn}
-            showCompletedBtn={this.showCompletedBtn}
-            clearCompletedBtn={this.clearCompletedBtn}
-            numberActive={this.state.numberActive}
-            tasks={this.state.tasksLocal}
-            colStyle={this.state.styles.colStyle}
-            minHeight={this.state.styles.minHeight}
-            position={`widget_${this.state.position}`}
-            panelEvent={this.state.panelEvent}
-        />;
+        return this.state.isSetting ?
+            <WidgetSetting
+                key={this.props.id}
+                id={this.props.id}
+                colStyle={this.state.styles.colStyle}
+                widgetMode={this.state.widgetMode}
+                addOrUpdateWidget={this.onUpdateCompleted}
+                originWidget={{
+                    type: this.state.type,
+                    widgetContent: {
+                        title: this.state.title,
+                        minHeight: this.state.styles.minHeight,
+                        todos: this.state.tasksLocal
+                    },
+                    onCancel: () => {
+                        this.setState({ isSetting: false });
+                    }
+                }}
+            /> :
+            <TodoListWidgetView
+                widget={{ title: this.state.title, widgetMode: this.state.widgetMode }}
+                handleDeleteItem={this.handleDeleteItem}
+                updateNumberActive={this.updateNumberActive}
+                inputAddTodo={this.inputAddTodo}
+                onEnter={this.onEnter}
+                showAllBtn={this.showAllBtn}
+                showActiveBtn={this.showActiveBtn}
+                showCompletedBtn={this.showCompletedBtn}
+                clearCompletedBtn={this.clearCompletedBtn}
+                numberActive={this.state.numberActive}
+                tasks={this.state.tasksLocal}
+                colStyle={this.state.styles.colStyle}
+                minHeight={this.state.styles.minHeight}
+                position={`widget_${this.state.position}`}
+                panelEvent={this.state.panelEvent}
+            />;
     }
 }

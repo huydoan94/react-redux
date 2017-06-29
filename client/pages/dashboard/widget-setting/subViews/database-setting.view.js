@@ -15,7 +15,10 @@ export class DatabaseSettingView extends Component {
     }
 
     componentDidMount() {
-        this.getAllDbHeader('contacts');
+        const source = this.props.initialContent && typeof this.props.initialContent.widgetContent !== 'undefined' ?
+            this.props.initialContent.widgetContent.source : null;
+
+        this.getAllDbHeader(source ? source : 'contacts');
     }
 
     init() {
@@ -75,15 +78,21 @@ export class DatabaseSettingView extends Component {
         options: [
             {
                 id: 0,
-                type: 'Contacts'
+                type: 'Contacts',
+                selected: this.props.initialContent ?
+                    this.props.initialContent.widgetContent.source === 'contacts' : false
             },
             {
                 id: 1,
-                type: 'Stocks'
+                type: 'Stocks',
+                selected: this.props.initialContent ?
+                    this.props.initialContent.widgetContent.source === 'stocks' : false
             },
             {
                 id: 2,
-                type: 'Tasks'
+                type: 'Tasks',
+                selected: this.props.initialContent ?
+                    this.props.initialContent.widgetContent.source === 'tasks' : false
             }],
         events: {
             onSelectorChange: (event) => {
@@ -115,11 +124,18 @@ export class DatabaseSettingView extends Component {
                 }),
                 available = Object.assign({}, this.state.availableColumns),
                 selected = Object.assign({}, this.state.selectedColumns),
-                availableColumns = available.columns,
-                selectedColumns = selected.columns;
+                availableColumns = [],
+                selectedColumns = [],
+                initialColumns = this.props.initialContent &&
+                    typeof this.props.initialContent.widgetContent.columns !== 'undefined' ?
+                    this.props.initialContent.widgetContent.columns : [];
 
-            availableColumns = Object.keys(values[firstElement]);
-            selectedColumns.length = 0;
+            availableColumns = (Object.keys(values[firstElement])).filter((column) => {
+                return !initialColumns.includes(column);
+            });
+            selectedColumns = (Object.keys(values[firstElement])).filter((column) => {
+                return initialColumns.includes(column);
+            });
             available = { ...available, columns: availableColumns };
             selected = { ...selected, columns: selectedColumns };
 

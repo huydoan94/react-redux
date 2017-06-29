@@ -2,11 +2,32 @@ import React from 'react';
 import { OrgchartWidgetView } from './orgchart-widget.view';
 import { getAll } from './orgchart-widget.services';
 
+import { WidgetSetting } from '../widget-setting/widget-setting.component';
+
 export class OrgchartWidget extends React.Component {
     constructor(props) {
         super(props);
 
         this.init();
+    }
+
+    init = () => {
+        this.state = {
+            type: 'ORGCHART_WIDGET',
+            title: this.props.widgetTitle,
+            widgetMode: this.props.widgetMode,
+            rootContact: null,
+            panelEvent: (event) => {
+                this.panelEventTrigger(event.target.value);
+            },
+            styles: {
+                colStyle: this.props.colStyle,
+                minHeight: this.props.userHeight
+            },
+            isSetting: false
+        };
+
+        this.getDataAndSetState(this.props.widgetContent);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -18,26 +39,13 @@ export class OrgchartWidget extends React.Component {
             title: nextProps.widgetTitle,
             widgetMode: nextProps.widgetMode
         });
+
+        this.getDataAndSetState(nextProps.widgetContent);
     }
 
-    init = () => {
-        this.state = {
-            title: this.props.widgetTitle,
-            widgetMode: this.props.widgetMode,
-            rootContactId: this.props.widgetContent,
-            rootContact: null,
-            panelEvent: (event) => {
-                this.panelEventTrigger(event.target.value);
-            },
-            styles: {
-                colStyle: this.props.colStyle,
-                minHeight: this.props.userHeight
-            }
-        };
-
+    getDataAndSetState = (rootId) => {
         getAll().then((datas) => {
-            const rootId = this.props.widgetContent,
-                firstElement = 0;
+            const firstElement = 0;
             let rootContact = datas.filter((data) => data.id === rootId)[firstElement];
 
             rootContact.children = this.combineDataToTreeModel(rootId, datas);
@@ -83,6 +91,7 @@ export class OrgchartWidget extends React.Component {
             });
             break;
         case 'setting':
+            this.setState({ isSetting: true });
             break;
         case 'remove':
             this.props.deleteWidget(thisWidgetPosition);
@@ -92,10 +101,34 @@ export class OrgchartWidget extends React.Component {
         }
     }
 
+    onUpdateCompleted = (widgetPosition, settingData, isUpdate) => {
+        isUpdate ? this.setState({ isSetting: false }) : null;
+        this.props.addOrUpdateWidget(widgetPosition, settingData, isUpdate);
+    }
+
     render() {
-        return <OrgchartWidgetView
-            WidgetConfigs={this.state}
-            WidgetStyles={{ colStyle: this.state.styles.colStyle, minHeight: this.state.styles.minHeight }}
-        />;
+        return this.state.isSetting ?
+            <WidgetSetting
+                key={this.props.id}
+                id={this.props.id}
+                colStyle={this.state.styles.colStyle}
+                widgetMode={this.state.widgetMode}
+                addOrUpdateWidget={this.onUpdateCompleted}
+                originWidget={{
+                    type: this.state.type,
+                    widgetContent: {
+                        title: this.state.title,
+                        minHeight: this.state.styles.minHeight,
+                        root: this.state.rootContact ? this.state.rootContact.id : null
+                    },
+                    onCancel: () => {
+                        this.setState({ isSetting: false });
+                    }
+                }}
+            /> :
+            <OrgchartWidgetView
+                WidgetConfigs={this.state}
+                WidgetStyles={{ colStyle: this.state.styles.colStyle, minHeight: this.state.styles.minHeight }}
+            />;
     }
 }

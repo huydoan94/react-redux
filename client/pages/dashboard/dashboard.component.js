@@ -61,7 +61,7 @@ export class Dashboard extends React.Component {
                             id={`widgetPos_${index + incrementNumber}`}
                             colStyle={getColStyle()}
                             widgetMode={widgetMode}
-                            addWidget={this.addWidget}
+                            addOrUpdateWidget={this.addOrUpdateWidget}
                         />;
                 }
             }
@@ -73,36 +73,42 @@ export class Dashboard extends React.Component {
             switch (widget.widgetType) {
             case 'TEXT_WIDGET':
                 widgetArray[widget.position + positionOffset] =
-                        <TextWidget key={`widgetPos_${widget.position}`}
+                        <TextWidget
+                            key={`widgetPos_${widget.position}`}
                             id={`widgetPos_${widget.position}`}
                             widgetTitle={widget.title}
                             colStyle={getColStyle()}
                             userHeight={widget.maxHeight}
                             widgetMode={widgetMode}
+                            addOrUpdateWidget={this.addOrUpdateWidget}
                             deleteWidget={this.deleteWidget}
                             widgetContent={widget.configs.text}
                         />;
                 break;
             case 'DATABASE_WIDGET':
                 widgetArray[widget.position + positionOffset] =
-                        <DatabaseWidget key={`widgetPos_${widget.position}`}
+                        <DatabaseWidget
+                            key={`widgetPos_${widget.position}`}
                             id={`widgetPos_${widget.position}`}
                             widgetTitle={widget.title}
                             colStyle={getColStyle()}
                             userHeight={widget.maxHeight}
                             widgetMode={widgetMode}
+                            addOrUpdateWidget={this.addOrUpdateWidget}
                             deleteWidget={this.deleteWidget}
                             widgetContent={widget.configs}
                         />;
                 break;
             case 'TODOLIST_WIDGET':
                 widgetArray[widget.position + positionOffset] =
-                        <TodoListWidget key={`widgetPos_${widget.position}`}
+                        <TodoListWidget
+                            key={`widgetPos_${widget.position}`}
                             id={`widgetPos_${widget.position}`}
                             widgetTitle={widget.title}
                             colStyle={getColStyle()}
                             userHeight={widget.maxHeight}
                             widgetMode={widgetMode}
+                            addOrUpdateWidget={this.addOrUpdateWidget}
                             deleteWidget={this.deleteWidget}
                             widgetContent={widget.configs.todos}
                             updateTodoItemInDashboard={this.updateTodoItemInDashboard}
@@ -110,12 +116,14 @@ export class Dashboard extends React.Component {
                 break;
             case 'ORGCHART_WIDGET':
                 widgetArray[widget.position + positionOffset] =
-                        <OrgchartWidget key={`widgetPos_${widget.position}`}
+                        <OrgchartWidget
+                            key={`widgetPos_${widget.position}`}
                             id={`widgetPos_${widget.position}`}
                             widgetTitle={widget.title}
                             colStyle={getColStyle()}
                             userHeight={widget.maxHeight}
                             widgetMode={widgetMode}
+                            addOrUpdateWidget={this.addOrUpdateWidget}
                             deleteWidget={this.deleteWidget}
                             widgetContent={widget.configs.root}
                         />;
@@ -132,7 +140,7 @@ export class Dashboard extends React.Component {
         this.props.dispatch(changeLayout(parseInt(event.target.value, 10), this.props.dashboard.id));
     }
 
-    addWidget = (widgetPosition, settingData) => {
+    addOrUpdateWidget = (widgetPosition, settingData, isUpdate) => {
         let allWidgets = this.props.dashboard.widgets,
             newWidget = {
                 widgetType: settingData.widgetType,
@@ -143,8 +151,17 @@ export class Dashboard extends React.Component {
                 configs: settingData.widgetConfig
             };
 
-        allWidgets.push(newWidget);
-        this.props.dispatch(addWidget(allWidgets, this.props.dashboard.id));
+        if (isUpdate) {
+            let modifiedWidget = [];
+
+            modifiedWidget = allWidgets.map((widget) => {
+                return widget.position === widgetPosition ? newWidget : widget;
+            });
+            this.props.dispatch(addWidget(modifiedWidget, this.props.dashboard.id));
+        } else {
+            allWidgets.push(newWidget);
+            this.props.dispatch(addWidget(allWidgets, this.props.dashboard.id));
+        }
     }
 
     deleteWidget = (widgetPosition) => {

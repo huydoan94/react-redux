@@ -9,7 +9,7 @@ class InputView extends Component {
         this.inputAtrribute = this.props.inputAtrribute;
     }
 
-    onInputChange = (event) => {
+    onInputChange = () => {
         const ref = this.refs.inputRef;
 
         if (this.props.inputValue) {
@@ -32,7 +32,7 @@ class InputView extends Component {
     }
 
     render = cssModules(() => {
-        const { type, placeholder, inputClass, label } = this.inputAtrribute;
+        const { type, placeholder, inputClass, label, value } = this.inputAtrribute;
 
         return (
             <div className="form-group">
@@ -44,26 +44,11 @@ class InputView extends Component {
                     onChange={this.onInputChange}
                     onKeyPress={this.onKeyPress}
                     ref="inputRef"
+                    defaultValue={value}
                 />
             </div>
         );
     }, style);
 }
-
-// InputView.propTypes = {
-//     type: PropTypes.string.isRequired,
-//     placeholder: PropTypes.string,
-//     label: PropTypes.string,
-//     value: PropTypes.string,
-//     inputClass: PropTypes.string
-// };
-
-// InputView.defaultProps = {
-//     type: 'text',
-//     placeholder: '',
-//     label: '',
-//     value: '',
-//     inputClass: 'simpleInput'
-// };
 
 export default InputView;

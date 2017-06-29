@@ -39,7 +39,9 @@ export class OrgChartSettingView extends Component {
             let allContactsOption = datas.map((data) => {
                 return {
                     id: data.id,
-                    type: `${data.firstName} ${data.lastName}`
+                    type: `${data.firstName} ${data.lastName}`,
+                    selected: this.props.initialContent ?
+                        this.props.initialContent.widgetContent.root === data.id : false
                 };
             });
 
