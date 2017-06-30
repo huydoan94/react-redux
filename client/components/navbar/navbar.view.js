@@ -4,11 +4,13 @@ import { Nav, Navbar, NavDropdown, MenuItem } from 'react-bootstrap';
 import jwtDecode from 'jwt-decode';
 
 export const NavbarView = (props) => {
-    const fullName = sessionStorage.getItem('jwtToken') ? jwtDecode(sessionStorage.getItem('jwtToken')).fullname : '',
-        title = <div style={{ display: 'inline' }}>
-            <span style={{ color: 'white' }} className='glyphicon glyphicon-user'></span>
-            <span style={{ color: 'white' }}>&nbsp;&nbsp;{fullName}</span>
-        </div>;
+    const fullName = sessionStorage.getItem('jwtToken') ?
+            jwtDecode(sessionStorage.getItem('jwtToken')).fullname : '',
+        title =
+            <div style={{ display: 'inline' }}>
+                <span style={{ color: 'white' }} className='glyphicon glyphicon-user'></span>
+                <span style={{ color: 'white' }}>&nbsp;&nbsp;{fullName}</span>
+            </div>;
 
     const { navbarConfig } = props;
 
@@ -23,13 +25,15 @@ export const NavbarView = (props) => {
                 </Navbar.Brand>
             </Navbar.Header>
             <Nav pullRight>
-                <NavDropdown title={title} id='UserDropdown'>
-                    <MenuItem onClick={navbarConfig.events.changeMode}>
-                        {navbarConfig.viewOrEditMode === 'viewMode' && ('Edit')}
-                        {navbarConfig.viewOrEditMode === 'settingMode' && ('View')}
-                    </MenuItem>
-                    <MenuItem onClick={navbarConfig.events.logOut}>Log out</MenuItem>
-                </NavDropdown>
+                {sessionStorage.getItem('jwtToken') &&
+                    <NavDropdown title={title} id='UserDropdown'>
+                        <MenuItem onClick={navbarConfig.events.changeMode}>
+                            {navbarConfig.viewOrEditMode === 'viewMode' && ('Edit')}
+                            {navbarConfig.viewOrEditMode === 'settingMode' && ('View')}
+                        </MenuItem>
+                        <MenuItem onClick={navbarConfig.events.logOut}>Log out</MenuItem>
+                    </NavDropdown>
+                }
             </Nav>
         </Navbar>
     );

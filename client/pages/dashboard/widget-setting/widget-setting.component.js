@@ -235,8 +235,9 @@ export class WidgetSetting extends React.Component {
             this.setState({
                 widgetType: 'TODOLIST_WIDGET',
                 widgetConfig: {
-                    todos: this.props.originWidget && typeof this.props.originWidget.widgetContent !== 'undefined' ?
-                        this.props.originWidget.widgetContent.todos.map((todo) => parseInt(todo.id, 10)) : []
+                    todos: this.props.originWidget &&
+                        typeof this.props.originWidget.widgetContent.todos !== 'undefined' ?
+                            this.props.originWidget.widgetContent.todos.map((todo) => parseInt(todo.id, 10)) : []
                 }
             });
 

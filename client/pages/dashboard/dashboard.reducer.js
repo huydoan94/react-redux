@@ -1,5 +1,4 @@
 export const dashboard = (state = {}, action) => {
-    console.log(action);
     switch (action.type) {
     case 'DASHBOARD_FETCH':
         return action.dashboardsData;
@@ -9,7 +8,7 @@ export const dashboard = (state = {}, action) => {
         return { ...state, widgetMode: action.dashboardsData };
     case 'DASHBOARD_REMOVE_WIDGET':
         return { ...state, widgets: action.dashboardsData };
-    case 'DASHBOARD_ADD_WIDGET':
+    case 'DASHBOARD_ADD_UPDATE_WIDGET':
         return { ...state, widgets: action.dashboardsData };
     default:
         return state;

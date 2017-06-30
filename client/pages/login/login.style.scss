@@ -1,12 +1,18 @@
 .login-wrapper {
-    width: 50%;
+    width: 35%;
     background-color: #f6f6f6;
     padding: 40px;
     text-align: center;
+    margin: 0 auto;
 }
 
 .login-title {
     margin-bottom: 30px;
+}
+
+.login-error {
+    color: red;
+    font-size: larger;
 }
 
 .btn-login {

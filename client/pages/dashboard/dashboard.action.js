@@ -5,7 +5,7 @@ const DashboardAction = {
     DASHBOARD_FETCH: 'DASHBOARD_FETCH',
     DASHBOARD_CHANGE_LAYOUT: 'DASHBOARD_CHANGE_LAYOUT',
     DASHBOARD_REMOVE_WIDGET: 'DASHBOARD_REMOVE_WIDGET',
-    DASHBOARD_ADD_WIDGET: 'DASHBOARD_ADD_WIDGET'
+    DASHBOARD_ADD_UPDATE_WIDGET: 'DASHBOARD_ADD_UPDATE_WIDGET'
 };
 
 const objectifier = (type, dashboardsData) => {
@@ -38,8 +38,8 @@ export const removeWidget = (editedWidget, dashboardId) => (dispatch) => {
     });
 };
 
-export const addWidget = (editedWidget, dashboardId) => (dispatch) => {
+export const addOrUpdateWidget = (editedWidget, dashboardId) => (dispatch) => {
     return updateDashboardWidgets(editedWidget, dashboardId).then((result) => {
-        dispatch(objectifier(DashboardAction.DASHBOARD_ADD_WIDGET, result.widgets));
+        dispatch(objectifier(DashboardAction.DASHBOARD_ADD_UPDATE_WIDGET, result.widgets));
     });
 };

@@ -1,21 +1,18 @@
 import { login } from './login.service';
 
 const loginAction = {
-    LOGIN_SUCCESS: 'LOGIN_SUCCESS'
+    LOGIN_SUCCESS: 'LOGIN_SUCCESS',
+    LOGIN_FAIL: 'LOGIN_FAIL'
 };
 
 const objectifier = (type, loginData) => {
-    return {
-        type,
-        loginData
-    };
+    return { type, loginData };
 };
 
 export const loginRequest = (account) => (dispatch) => {
     login(account).then((response) => {
-        const token = response.token;
-
-        sessionStorage.setItem('jwtToken', token);
-        dispatch(objectifier(loginAction.LOGIN_SUCCESS, token));
+        dispatch(objectifier(loginAction.LOGIN_SUCCESS, response.token));
+    }).catch(() => {
+        dispatch(objectifier(loginAction.LOGIN_FAIL));
     });
 };

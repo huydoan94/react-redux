@@ -10,9 +10,10 @@ export class LoginForm extends React.Component {
     constructor(props) {
         super(props);
 
-        const { dispatch } = this.props;
-
-        this.dispatch = dispatch;
+        this.state = {
+            jwtToken: sessionStorage.getItem('jwtToken'),
+            error: null
+        };
 
         this.inputUsername = {
             type: 'text',
@@ -22,20 +23,36 @@ export class LoginForm extends React.Component {
         };
 
         this.inputPassword = {
-            type: 'text',
+            type: 'password',
             placeholder: 'Password',
             value: '',
             inputClass: 'input-custom'
         };
+
+        if (sessionStorage.getItem('jwtToken')) {
+            browserHistory.push('/dashboard');
+        }
     }
 
-    LoginClick = (ref) => {
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            jwtToken: nextProps.login.jwtToken,
+            error: nextProps.login.error
+        });
+
+        if (nextProps.login.jwtToken) {
+            sessionStorage.setItem('jwtToken', nextProps.login.jwtToken);
+            browserHistory.push('/dashboard');
+        }
+    }
+
+    LoginClick = () => {
         let account = {
             username: this.inputUsername.value,
             password: this.inputPassword.value
         };
 
-        this.dispatch(loginRequest(account));
+        this.props.dispatch(loginRequest(account));
     }
 
     setUsername = (ref) => {
@@ -47,10 +64,6 @@ export class LoginForm extends React.Component {
     }
 
     render() {
-        if (sessionStorage.getItem('jwtToken')) {
-            browserHistory.push('/dashboard');
-        }
-
         return (
             <LoginView
                 inputUsername={this.inputUsername}
@@ -58,6 +71,7 @@ export class LoginForm extends React.Component {
                 setUsername={this.setUsername}
                 setPassword={this.setPassword}
                 onLoginClick={this.LoginClick}
+                error={this.state.error}
             />
         );
     }

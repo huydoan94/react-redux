@@ -2,8 +2,7 @@ import React from 'react';
 import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 
 export const SelectView = ({ WidgetSelector }) => {
-    const { label, options, events } = WidgetSelector,
-        defaultValue = (options.filter((option) => option.selected === true))[0];
+    const { label, options, events } = WidgetSelector;
 
     return (
         <FormGroup controlId="formControlsSelect">
@@ -11,14 +10,14 @@ export const SelectView = ({ WidgetSelector }) => {
             <FormControl componentClass="select"
                 placeholder="select"
                 onChange={events.onSelectorChange}
-                defaultValue={defaultValue ? defaultValue.type : null}
             >
                 {
                     options.map((option) =>
                         <option
-                            key={option.id}
-                            id={option.id}
+                            key={`selectOption_${option.id}`}
+                            id={`selectOption_${option.id}`}
                             value={option.type}
+                            selected={option.selected}
                         >
                             {option.type}
                         </option>)

@@ -6,7 +6,7 @@ import jwtDecode from 'jwt-decode';
 import { remove } from 'lodash';
 
 
-import { fetchDashboard, changeLayout, removeWidget, addWidget } from './dashboard.action';
+import { fetchDashboard, changeLayout, removeWidget, addOrUpdateWidget } from './dashboard.action';
 import { updateDashBoard } from './dashboard.service';
 
 import { TextWidget } from './text-widget';
@@ -23,6 +23,8 @@ export class Dashboard extends React.Component {
 
         if (!sessionStorage.getItem('jwtToken')) {
             browserHistory.push('/login');
+
+            return;
         }
 
         props.dispatch(fetchDashboard(jwtDecode(sessionStorage.getItem('jwtToken')).id));
@@ -157,10 +159,10 @@ export class Dashboard extends React.Component {
             modifiedWidget = allWidgets.map((widget) => {
                 return widget.position === widgetPosition ? newWidget : widget;
             });
-            this.props.dispatch(addWidget(modifiedWidget, this.props.dashboard.id));
+            this.props.dispatch(addOrUpdateWidget(modifiedWidget, this.props.dashboard.id));
         } else {
             allWidgets.push(newWidget);
-            this.props.dispatch(addWidget(allWidgets, this.props.dashboard.id));
+            this.props.dispatch(addOrUpdateWidget(allWidgets, this.props.dashboard.id));
         }
     }
 
