@@ -19,7 +19,7 @@ export const NavbarView = (props) => {
             <Navbar.Header>
                 <Navbar.Brand>
                     <Link to='/dashboard'>
-                        <span style={{ color: 'white' }} className='glyphicon glyphicon-dashboard'></span>
+                        <span style={{ color: 'white' }} className='glyphicon glyphicon-dashboard' />
                         <span style={{ color: 'white' }}>&nbsp;Dashboard</span>
                     </Link>
                 </Navbar.Brand>
