@@ -51,6 +51,14 @@ export class WidgetSetting extends React.Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.widgetMode === 'viewMode' && nextProps.originWidget) {
+            nextProps.originWidget.onCancel();
+        } else if (nextProps.widgetMode === 'viewMode') {
+            this.setState({ isRevealed: false });
+        }
+    }
+
     WidgetSelector = {
         label: 'Widget Type:',
         options: [
@@ -124,7 +132,7 @@ export class WidgetSetting extends React.Component {
                     defaultWidth = 400,
                     defaultHeight = 200;
 
-                let thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10),
+                const thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10),
                     data = {
                         widgetType: this.state.widgetType,
 

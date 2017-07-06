@@ -154,12 +154,12 @@ export class Dashboard extends React.Component {
             };
 
         if (isUpdate) {
-            let modifiedWidget = [];
+            let modifiedWidgets = [];
 
-            modifiedWidget = allWidgets.map((widget) => {
+            modifiedWidgets = allWidgets.map((widget) => {
                 return widget.position === widgetPosition ? newWidget : widget;
             });
-            this.props.dispatch(addOrUpdateWidget(modifiedWidget, this.props.dashboard.id));
+            this.props.dispatch(addOrUpdateWidget(modifiedWidgets, this.props.dashboard.id));
         } else {
             allWidgets.push(newWidget);
             this.props.dispatch(addOrUpdateWidget(allWidgets, this.props.dashboard.id));
@@ -204,11 +204,16 @@ export class Dashboard extends React.Component {
     render() {
         const { layoutColumn, title, widgets, widgetMode } = this.props.dashboard;
 
-        return <DashboardView title={title}
+        return <DashboardView
+            title={title}
             layoutType={layoutColumn}
-            widgets={this.fillDashboard(
-                widgets,
-                typeof widgetMode === 'undefined' ? 'viewMode' : widgetMode)}
-            changeLayout={this.changeLayout} />;
+            widgets={
+                this.fillDashboard(
+                    widgets,
+                    typeof widgetMode === 'undefined' ? 'viewMode' : widgetMode
+                )
+            }
+            changeLayout={this.changeLayout}
+        />;
     }
 }

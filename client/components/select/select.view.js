@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 
-export const SelectView = ({ WidgetSelector }) => {
+export const Select = ({ WidgetSelector }) => {
     const { label, options, events } = WidgetSelector;
 
     return (

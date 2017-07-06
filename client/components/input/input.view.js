@@ -2,13 +2,7 @@ import React, { Component } from 'react';
 import cssModules from 'react-css-modules';
 import style from './input.style.scss';
 
-class InputView extends Component {
-    constructor(props) {
-        super(props);
-
-        this.inputAtrribute = this.props.inputAtrribute;
-    }
-
+export class Input extends Component {
     onInputChange = () => {
         const ref = this.refs.inputRef;
 
@@ -32,7 +26,7 @@ class InputView extends Component {
     }
 
     render = cssModules(() => {
-        const { type, placeholder, inputClass, label, value } = this.inputAtrribute;
+        const { type, placeholder, inputClass, label, value } = this.props.inputAtrribute;
 
         return (
             <div className="form-group">
@@ -50,5 +44,3 @@ class InputView extends Component {
         );
     }, style);
 }
-
-export default InputView;

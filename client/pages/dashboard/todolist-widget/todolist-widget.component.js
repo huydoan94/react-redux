@@ -35,7 +35,7 @@ export class TodoListWidget extends React.Component {
         };
 
         this.triggerPanelEvent = (eventType) => {
-            let thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10);
+            const thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10);
 
             switch (eventType) {
             case 'fullscreen':

@@ -55,22 +55,22 @@ export class OrgchartWidget extends React.Component {
 
     combineDataToTreeModel = (rootId, datas) => {
         const emptyComparer = 0;
-        let rootContact = datas.filter((data) => data.superiorId === rootId),
+        let immediateContact = datas.filter((data) => data.superiorId === rootId),
             leftOver = datas.filter((data) => data.superiorId !== rootId && data.id !== rootId);
 
         if (leftOver.length === emptyComparer) {
             return [];
         }
 
-        rootContact.forEach((result) => {
+        immediateContact.forEach((result) => {
             result.children = this.combineDataToTreeModel(result.id, leftOver);
         });
 
-        return rootContact;
+        return immediateContact;
     }
 
     panelEventTrigger(eventType) {
-        let thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10);
+        const thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10);
 
         switch (eventType) {
         case 'fullscreen':

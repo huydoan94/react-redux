@@ -1,11 +1,11 @@
-import React from 'react';
-// import HelloMessage from './HelloMessage';
-import {expect} from 'chai';
+import React from "react";
+import TestUtils from "react-addons-test-utils";
+import expect from 'expect';
 
-describe('HelloMessage', () => {
-    it('HelloMessage not null', () => {
-        // let wrapper = shallow(<HelloMessage name='thanh' />);
+import { DashboardView } from './../dashboard.view';
 
-        expect(true).to.equal(true);
+describe('DashboardView', () => {
+    it('renders without problems', () => {
+
     });
 });

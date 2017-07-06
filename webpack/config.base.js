@@ -30,7 +30,10 @@ module.exports = {
             },
 
             /* images */
-            {test: /\.(jpg|jpeg|gif|png|ico)$/, loader: 'url-loader?limit=12288&name=assets/images/[name].[ext]'},
+            {
+                test: /\.(jpg|jpeg|gif|png|ico)$/,
+                loader: 'url-loader?limit=12288&name=assets/images/[name].[ext]'
+            },
 
             /* fonts */
             {
@@ -48,9 +51,9 @@ module.exports = {
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({
             __LANGUAGES__: JSON.stringify([
-                {'locale': 'en', 'name': 'English'},
-                {'locale': 'fr', 'name': 'French'},
-                {'locale': 'it', 'name': 'Italian'}
+                { 'locale': 'en', 'name': 'English' },
+                { 'locale': 'fr', 'name': 'French' },
+                { 'locale': 'it', 'name': 'Italian' }
             ])
         })
     ]

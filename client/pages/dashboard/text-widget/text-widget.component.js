@@ -46,7 +46,7 @@ export class TextWidget extends React.Component {
     }
 
     panelEventTrigger(eventType) {
-        let thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10);
+        const thisWidgetPosition = parseInt((this.props.id).substring('widgetPos_'.length), 10);
 
         switch (eventType) {
         case 'fullscreen':
