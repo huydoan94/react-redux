@@ -1,7 +1,8 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import sinon from 'sinon';
+import { shallow } from 'enzyme';
 import { expect } from 'chai';
+
 import { Button } from '../button.view';
 
 describe('button.view', () => {

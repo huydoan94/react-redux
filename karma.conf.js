@@ -1,4 +1,4 @@
-module.exports = function(config) {
+module.exports = function (config) {
     config.set({
         preprocessors: {
             'client/**/*.spec.js': ['webpack', 'sourcemap']
@@ -20,6 +20,12 @@ module.exports = function(config) {
                 { test: /\.png$/, loader: 'ignore' },
                 { test: /\.json$/, loader: 'json' }
                 ]
+            },
+            externals: {
+                'cheerio': 'window',
+                'react/addons': true,
+                'react/lib/ExecutionEnvironment': true,
+                'react/lib/ReactContext': true
             }
         },
         webpackServer: {
@@ -27,18 +33,13 @@ module.exports = function(config) {
         },
         browsers: ['PhantomJS'],
         frameworks: ['mocha'],
+        reporters: ['dots'],
         files: [
             './node_modules/phantomjs-polyfill-find/find-polyfill.js',
             './node_modules/phantomjs-polyfill-includes/includes-polyfill.js',
             './node_modules/phantomjs-polyfill-string-includes/index.js',
             './node_modules/babel-polyfill/dist/polyfill.js',
             'client/**/*.spec.js'
-        ],
-        externals: {
-            'cheerio': 'window',
-            'react/addons': true,
-            'react/lib/ExecutionEnvironment': true,
-            'react/lib/ReactContext': true
-        }
+        ]
     });
 };
