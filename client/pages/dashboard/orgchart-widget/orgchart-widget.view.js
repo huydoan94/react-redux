@@ -51,7 +51,7 @@ const ContactTemplate = cssModules((props) => {
                 </div>
             </div>
 
-            {rootContact.children.length !== 0 &&
+            { rootContact.children.length ?
                 <ul>
                     {rootContact.children.map((child) =>
                         <ContactTemplate
@@ -60,7 +60,7 @@ const ContactTemplate = cssModules((props) => {
                         />
                     )}
                 </ul>
-            }
+            : null }
         </li>
     );
 }, style);

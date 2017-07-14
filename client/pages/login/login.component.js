@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import jwtDecode from 'jwt-decode';
 
 import { loginRequest } from './login.action';
 import { LoginView } from './login.view';

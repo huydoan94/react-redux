@@ -52,7 +52,8 @@ export class Dashboard extends React.Component {
         };
 
         const fillWithEmptyWidget = (currentWidgets, columnLayout) => {
-            let missingWidget = columnLayout - (currentWidgets.length % columnLayout),
+            let missingWidget = widgetMode === 'settingMode' ?
+                    columnLayout - (currentWidgets.length % columnLayout) : 0,
                 totalWidgetShouldBe = currentWidgets.length + missingWidget;
 
             for (let index = 0; index < totalWidgetShouldBe; index += incrementNumber) {

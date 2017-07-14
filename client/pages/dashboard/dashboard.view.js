@@ -8,7 +8,8 @@ export const DashboardView = cssModules(({ title, layoutType, widgets, changeLay
         let blocks = [],
             finalBlocks = [];
 
-        const indexOffset = 1;
+        const indexOffset = 1,
+            isFilled = 0;
         const template = (blockWidgets, index) => {
             return (
                 <div key={`widgetBlockPos_${index}`}
@@ -22,7 +23,7 @@ export const DashboardView = cssModules(({ title, layoutType, widgets, changeLay
         allWidgets.forEach((widget, index) => {
             blocks.push(widget);
 
-            if (!((index + indexOffset) % columnLayout)) {
+            if ((index + indexOffset) % columnLayout === isFilled) {
                 finalBlocks.push(template(blocks, (index + indexOffset) / columnLayout));
                 blocks.length = 0;
             }
