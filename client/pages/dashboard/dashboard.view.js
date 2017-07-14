@@ -23,7 +23,8 @@ export const DashboardView = cssModules(({ title, layoutType, widgets, changeLay
         allWidgets.forEach((widget, index) => {
             blocks.push(widget);
 
-            if ((index + indexOffset) % columnLayout === isFilled) {
+            if ((index + indexOffset) % columnLayout === isFilled ||
+                (index + indexOffset) === allWidgets.length) {
                 finalBlocks.push(template(blocks, (index + indexOffset) / columnLayout));
                 blocks.length = 0;
             }
@@ -32,15 +33,34 @@ export const DashboardView = cssModules(({ title, layoutType, widgets, changeLay
         return finalBlocks;
     };
 
+    const singleCol = 1,
+        doubleCol = 2,
+        tripleCol = 3;
+
     return (
         <div>
             <div styleName='dashboard__title'>
                 <h4 styleName='dashboard__title__header'>{title}</h4>
                 <div styleName='dashboard__title__buttons'>
                     <ButtonGroup>
-                        <Button onClick={changeLayout} value='1'>1</Button>
-                        <Button onClick={changeLayout} value='2'>2</Button>
-                        <Button onClick={changeLayout} value='3'>3</Button>
+                        <Button
+                            value='1'
+                            onClick={changeLayout}
+                            bsStyle={layoutType === singleCol ? 'primary' : 'default'}>
+                            Single Collumn
+                        </Button>
+                        <Button
+                            value='2'
+                            onClick={changeLayout}
+                            bsStyle={layoutType === doubleCol ? 'primary' : 'default'}>
+                            Double Collumns
+                        </Button>
+                        <Button
+                            value='3'
+                            onClick={changeLayout}
+                            bsStyle={layoutType === tripleCol ? 'primary' : 'default'}>
+                            Triple Collumns
+                        </Button>
                     </ButtonGroup>
                 </div>
             </div>

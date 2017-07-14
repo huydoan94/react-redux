@@ -1,6 +1,6 @@
 import React from 'react';
 import cssModules from 'react-css-modules';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { ButtonToolbar, Button } from 'react-bootstrap';
 
 import style from './widget-setting.style.scss';
 
@@ -49,10 +49,10 @@ export const WidgetSettingView = cssModules((props) => {
                         <div>
                             {WidgetConfigs.subViewSetting}
                         </div>
-                        <ButtonGroup>
-                            <Button onClick={SaveButton.events.onSave}>{SaveButton.label}</Button>
+                        <ButtonToolbar>
+                            <Button bsStyle="primary" onClick={SaveButton.events.onSave}>{SaveButton.label}</Button>
                             <Button onClick={CancelButton.events.onCancel}>{CancelButton.label}</Button>
-                        </ButtonGroup>
+                        </ButtonToolbar>
                     </div>
                 ) : (
                         <span styleName='plus-icon' onClick={RevealSettings}>+</span>
