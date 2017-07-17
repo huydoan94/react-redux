@@ -46,19 +46,19 @@ export const DashboardView = cssModules(({ title, layoutType, widgets, changeLay
                         <Button
                             value='1'
                             onClick={changeLayout}
-                            bsStyle={layoutType === singleCol ? 'primary' : 'default'}>
+                            bsStyle={layoutType === singleCol ? 'info' : 'default'}>
                             Single Collumn
                         </Button>
                         <Button
                             value='2'
                             onClick={changeLayout}
-                            bsStyle={layoutType === doubleCol ? 'primary' : 'default'}>
+                            bsStyle={layoutType === doubleCol ? 'info' : 'default'}>
                             Double Collumns
                         </Button>
                         <Button
                             value='3'
                             onClick={changeLayout}
-                            bsStyle={layoutType === tripleCol ? 'primary' : 'default'}>
+                            bsStyle={layoutType === tripleCol ? 'info' : 'default'}>
                             Triple Collumns
                         </Button>
                     </ButtonGroup>

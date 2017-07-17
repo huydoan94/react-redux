@@ -21,6 +21,14 @@ export const DatabaseWidgetView = (props) => {
         }
     };
 
+    const renderShowsTotal = (start, to, total) => {
+        return (
+            <h4 style={{ 'paddingLeft': '15px', 'marginBottom': '-20px' }}>
+                {start} to {to} of {total} Results
+            </h4>
+        );
+    };
+
     const tableOptions = {
         sizePerPage: 5,
         paginationSize: 3,
@@ -30,10 +38,7 @@ export const DatabaseWidgetView = (props) => {
         hideSizePerPage: true,
         alwaysShowAllBtns: true,
         paginationPosition: 'top',
-        onPageChange: (page, sizePerPage) => {
-            console.log(`${page  } + ${  sizePerPage}`);
-            // TODO: Missing showing current contact block
-        }
+        paginationShowsTotal: renderShowsTotal
     };
 
     return (
