@@ -23,9 +23,14 @@ export const DatabaseWidgetView = (props) => {
 
     const renderShowsTotal = (start, to, total) => {
         return (
-            <h4 style={{ 'paddingLeft': '15px', 'marginBottom': '-20px' }}>
-                {start} to {to} of {total} Results
-            </h4>
+            <p style={{
+                paddingLeft: '15px',
+                paddingTop: '10px',
+                marginBottom: '-20px',
+                fontSize: '15px'
+            }}>
+                Showing {start} to {to} of {total} Results
+            </p>
         );
     };
 

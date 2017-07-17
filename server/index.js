@@ -1,5 +1,3 @@
-/* eslint-disable no-magic-numbers,no-process-env */
-
 const express = require('express');
 const compression = require('compression');
 const webpack = require('webpack');
